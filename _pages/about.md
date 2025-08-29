@@ -84,5 +84,7 @@ Y. He, Z. Wang, Z. Shen, **G. Sun**, et al.
 - **National 3rd Prize**, China Software Cup, 2022
 
 ---
+<div style="width: 50%; max-width: 600px; margin: auto; text-align: center;">
+    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=UU2wu4zRp8nAXv8u4nsk5HdcnZvqEkkRt-bj6sSqu8w&cl=ffffff&w=a"></script>
+</div>
 
-<script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=UU2wu4zRp8nAXv8u4nsk5HdcnZvqEkkRt-bj6sSqu8w&cl=ffffff&w=a"></script>
