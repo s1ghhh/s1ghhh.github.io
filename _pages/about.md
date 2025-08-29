@@ -82,11 +82,7 @@ Y. He, Z. Wang, Z. Shen, **G. Sun**, et al.
 - **Outstanding Student**, Sichuan University, 2021 & 2022  
 - **National 1st Prize**, China Internet+ Innovation and Entrepreneurship Competition, 2022  
 - **National 3rd Prize**, China Software Cup, 2022
-- 
+
 ---
 
-## Map
-
-<div style="width: 50%; max-width: 600px; margin: auto; text-align: center;">
-    <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=kTMcfgVSl2wlhaC8eXnmS48wmgbERZvGUS8N-iCZAiY&cl=ffffff&w=a"></script>
-</div>
+<script type="text/javascript" id="mmvst_globe" src="//mapmyvisitors.com/globe.js?d=AqfmJpndhPj5MGus7zq0eY98P1YlEBNriNE3dhPMh-Q"></script>
