@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a second-year Ph.D. student at the [University of Maryland, College Park](https://umd.edu/), in the Department of Electrical & Computer Engineering, advised by [Prof. Ang Li](https://ece.umd.edu/faculty/ang-li).  
+I am a second-year Ph.D. student at the [University of Maryland, College Park](https://umd.edu/), in the Department of Electrical & Computer Engineering, advised by [Prof. Ang Li](https://www.ang-li.com/).  
 Before that, I obtained my bachelor’s degree at the School of Cyber Science and Engineering, [Sichuan University](https://www.scu.edu.cn/).
 
 I’m always open to collaborations! Feel free to reach out to me at [ghsun@umd.edu](mailto:ghsun@umd.edu).
