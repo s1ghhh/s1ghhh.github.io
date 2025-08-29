@@ -9,7 +9,7 @@
 locale                   : "en-US"
 title                    : "Guoheng Sun"
 title_separator          : "-"
-name                     : &name "Guoheng Sun"
+name                     : &name "Welcome!"
 description              : &description "Second-year PhD student at UMD ECE"
 url                      : https://s1ghhh.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
