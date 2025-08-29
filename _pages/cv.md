@@ -23,7 +23,7 @@ Work experience
 
 * Fall 2024: Research Intern
   * LLM360 Team/MBZUAI
-  * Duties included: Merging pull requests
+  * Duties included: Scaling law, Megatron
   * Supervisor: Hongyi Wang & Hector Liu
   
 Skills
