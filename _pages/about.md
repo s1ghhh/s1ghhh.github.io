@@ -26,7 +26,7 @@ I’m always open to collaborations! Feel free to reach out to me at [ghsun@umd.
 
 - [2025.08] Started my research internship at [Snowflake AI Research](https://www.snowflake.com/en/blog/authors/snowflake-ai-research/), working with [Zhewei Yao](https://yaozhewei.github.io/) & [Yuxiong He](https://www.snowflake.com/en/blog/authors/yuxiong-he/) on reinforcement learning for Text-to-SQL.  
 - [2025.05] I am very honored to receive the [Qualcomm Innovation Fellowship](https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-north-america) together with [Shwai](https://shwai-he.github.io/). Many thanks to Qualcomm for supporting our research on improving the efficiency of the transformer architecture.  
-- [2025.05] Our model **Arctic-Text2SQL-R1-32B** achieved **Top 1** on the [BIRD-SQL Leaderboard](https://bird-bench.github.io/).  
+- [2025.05] Our model `Arctic-Text2SQL-R1-32B` achieved **Top 1** on the [BIRD-SQL Leaderboard](https://bird-bench.github.io/).  
 - [2024.11] Our work *Model-GLUE* was accepted at **NeurIPS 2024 (Datasets & Benchmarks Track)**.  
 - [2024.11] Our work *SHED* and *Flora* were accepted at **NeurIPS 2024**.  
 
@@ -48,11 +48,11 @@ Y. Wang\*, **G. Sun\***, W. Ye, G. Qu, A. Li
 
 ### <span style="color:#52ADC8">Arctic-Text2SQL-R1: Simple Rewards, Strong Reasoning in Text-to-SQL</span>  
 Z. Yao, **G. Sun**, L. Borchmann, Z. Shen, M. Deng, B. Zhai, H. Zhang, A. Li, Y. He  
-*arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.20315)] [[Code](https://github.com/...)]  
+*arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.20315)] [[Code](https://github.com/snowflakedb/ArcticTraining/)]  
 
 ### <span style="color:#52ADC8">What Matters in Transformers? Not All Attention is Needed</span>  
 S. He\*, **G. Sun\***, Z. Shen, A. Li  
-*arXiv preprint 2024* [[Link](https://arxiv.org/abs/2406.15786)] [[Code](https://github.com/...)]
+*arXiv preprint 2024* [[Link](https://arxiv.org/abs/2406.15786)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)]
 
 ### <span style="color:#52ADC8">Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild</span>  
 X. Zhao\*, **G. Sun\***, R. Cai\*, Y. Zhou\*, P. Li\*, P. Wang, B. Tan, Y. He, L. Chen, Y. Liang, B. Chen, B. Yuan, H. Wang†, A. Li†, Z. Wang†, T. Chen†  
