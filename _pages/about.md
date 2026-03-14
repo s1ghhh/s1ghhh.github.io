@@ -34,8 +34,12 @@ I’m always open to collaborations! Feel free to reach out to me at [ghsun@umd.
 
 ## Publications
 
-### <span style="color:#52ADC8">CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs</span>  
-**G. Sun**, Z. Wang, B. Tian, M. Liu, Z. Shen, S. He, Y. He, W. Ye, Y. Wang, A. Li  
+### <span style="color:#52ADC8">ROCKET: Residual-Oriented Multi-Layer Alignment for Spatially-Aware Vision-Language-Action Models</span>
+**G. Sun**, T. Du, K. Feng, C. Luo, X. Ding, Z. Shen, Z. Wang, Y. He, A. Li
+*arXiv preprint 2026* [[Link](https://arxiv.org/abs/2602.17951)]
+
+### <span style="color:#52ADC8">CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs</span>
+**G. Sun**, Z. Wang, B. Tian, M. Liu, Z. Shen, S. He, Y. He, W. Ye, Y. Wang, A. Li
 *arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.13778)]
 
 ### <span style="color:#52ADC8">VeriReason: Reinforcement Learning with Testbench Feedback for Reasoning-Enhanced Verilog Generation</span>  
@@ -44,6 +48,7 @@ Y. Wang\*, **G. Sun\***, W. Ye, G. Qu, A. Li
 
 ### <span style="color:#52ADC8">Invisible Tokens, Visible Bills: The Urgent Need to Audit Hidden Operations in Opaque LLM Services</span>  
 **G. Sun\***, Z. Wang\*, X. Zhao, B. Tian, Z. Shen, Y. He, J. Xing, A. Li
+
 *[ResponsibleFM Workshop](https://responsible-fm.github.io/) @ NeurIPS 2025 (Oral)* [[Link](https://arxiv.org/abs/2505.18471)]
 
 ### <span style="color:#52ADC8">Arctic-Text2SQL-R1: Simple Rewards, Strong Reasoning in Text-to-SQL</span>  
@@ -52,7 +57,12 @@ Z. Yao, **G. Sun**, L. Borchmann, Z. Shen, M. Deng, B. Zhai, H. Zhang, A. Li, Y.
 
 ### <span style="color:#52ADC8">What Matters in Transformers? Not All Attention is Needed</span>  
 S. He\*, **G. Sun\***, Z. Shen, A. Li
+
 *Transactions on Machine Learning Research (TMLR) 2025* [[Link](https://arxiv.org/abs/2406.15786)] [[OpenReview](https://openreview.net/pdf?id=1I7PCbOPfe)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)]
+
+### <span style="color:#52ADC8">Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples</span>
+**G. Sun\***, Y. Fu\*, H. Yang, J. Huang, R. Zhang, H. Wang
+*IEEE Transactions on Dependable and Secure Computing (TDSC) 2025*
 
 ### <span style="color:#52ADC8">Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild</span>  
 X. Zhao\*, **G. Sun\***, R. Cai\*, Y. Zhou\*, P. Li\*, P. Wang, B. Tan, Y. He, L. Chen, Y. Liang, B. Chen, B. Yuan, H. Wang†, A. Li†, Z. Wang†, T. Chen†  
