@@ -36,6 +36,7 @@ I’m always open to collaborations! Feel free to reach out to me at [ghsun@umd.
 
 ### <span style="color:#52ADC8">ROCKET: Residual-Oriented Multi-Layer Alignment for Spatially-Aware Vision-Language-Action Models</span>
 **G. Sun**, T. Du, K. Feng, C. Luo, X. Ding, Z. Shen, Z. Wang, Y. He, A. Li
+
 *arXiv preprint 2026* [[Link](https://arxiv.org/abs/2602.17951)]
 
 ### <span style="color:#52ADC8">CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs</span>
@@ -62,6 +63,7 @@ S. He\*, **G. Sun\***, Z. Shen, A. Li
 
 ### <span style="color:#52ADC8">Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples</span>
 **G. Sun\***, Y. Fu\*, H. Yang, J. Huang, R. Zhang, H. Wang
+
 *IEEE Transactions on Dependable and Secure Computing (TDSC) 2025*
 
 ### <span style="color:#52ADC8">Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild</span>  
