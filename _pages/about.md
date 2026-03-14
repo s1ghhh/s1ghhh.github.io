@@ -43,16 +43,16 @@ Y. Wang\*, **G. Sun\***, W. Ye, G. Qu, A. Li
 *arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.11849)]
 
 ### <span style="color:#52ADC8">Invisible Tokens, Visible Bills: The Urgent Need to Audit Hidden Operations in Opaque LLM Services</span>  
-**G. Sun\***, Z. Wang\*, X. Zhao, B. Tian, Z. Shen, Y. He, J. Xing, A. Li  
-*arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.18471)]
+**G. Sun\***, Z. Wang\*, X. Zhao, B. Tian, Z. Shen, Y. He, J. Xing, A. Li
+*[ResponsibleFM Workshop](https://responsible-fm.github.io/) @ NeurIPS 2025 (Oral)* [[Link](https://arxiv.org/abs/2505.18471)]
 
 ### <span style="color:#52ADC8">Arctic-Text2SQL-R1: Simple Rewards, Strong Reasoning in Text-to-SQL</span>  
 Z. Yao, **G. Sun**, L. Borchmann, Z. Shen, M. Deng, B. Zhai, H. Zhang, A. Li, Y. He  
 *arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.20315)] [[Code](https://github.com/snowflakedb/ArcticTraining/)]  
 
 ### <span style="color:#52ADC8">What Matters in Transformers? Not All Attention is Needed</span>  
-S. He\*, **G. Sun\***, Z. Shen, A. Li  
-*arXiv preprint 2024* [[Link](https://arxiv.org/abs/2406.15786)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)]
+S. He\*, **G. Sun\***, Z. Shen, A. Li
+*Transactions on Machine Learning Research (TMLR) 2025* [[Link](https://arxiv.org/abs/2406.15786)] [[OpenReview](https://openreview.net/pdf?id=1I7PCbOPfe)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)]
 
 ### <span style="color:#52ADC8">Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild</span>  
 X. Zhao\*, **G. Sun\***, R. Cai\*, Y. Zhou\*, P. Li\*, P. Wang, B. Tan, Y. He, L. Chen, Y. Liang, B. Chen, B. Yuan, H. Wang†, A. Li†, Z. Wang†, T. Chen†  
