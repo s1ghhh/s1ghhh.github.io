@@ -56,6 +56,10 @@ Y. Wang\*, **G. Sun\***, W. Ye, G. Qu, A. Li
 Z. Yao, **G. Sun**, L. Borchmann, Z. Shen, M. Deng, B. Zhai, H. Zhang, A. Li, Y. He  
 *arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.20315)] [[Code](https://github.com/snowflakedb/ArcticTraining/)]  
 
+### <span style="color:#52ADC8">SymRTLO: Enhancing RTL Code Optimization with LLMs and Neuron-Inspired Symbolic Reasoning</span>
+Y. Wang, W. Ye, P. Guo, Y. He, Z. Wang, B. Tian, S. He, **G. Sun**, Z. Shen, S. Chen, A. Srivastava, Q. Zhang, G. Qu, A. Li <br>
+*NeurIPS 2025* [[Link](https://arxiv.org/abs/2504.10369)]
+
 ### <span style="color:#52ADC8">Uncovering the Redundancy in Transformers via a Unified Study of Layer Dropping</span>
 S. He\*, **G. Sun\***, Z. Shen, A. Li <br>
 *Transactions on Machine Learning Research (TMLR) 2026* [[Link](https://arxiv.org/abs/2406.15786)] [[OpenReview](https://openreview.net/pdf?id=1I7PCbOPfe)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)] <br>
