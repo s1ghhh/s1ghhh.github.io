@@ -24,7 +24,7 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 
 ## What's New
 
-- [2026.02] Our work *What Matters in Transformers? Not All Attention is Needed* was accepted at **TMLR**.
+- [2026.02] Our work *Uncovering the Redundancy in Transformers via a Unified Study of Layer Dropping* was accepted at **TMLR**.
 - [2025.10] Our work *Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples* was accepted at **IEEE TDSC**.
 - [2025.05] Started my research internship at [Snowflake AI Research](https://www.snowflake.com/en/blog/authors/snowflake-ai-research/), working with [Zhewei Yao](https://yaozhewei.github.io/) & [Yuxiong He](https://www.snowflake.com/en/blog/authors/yuxiong-he/) on reinforcement learning for Text-to-SQL.
 - [2025.05] I am very honored to receive the [Qualcomm Innovation Fellowship](https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-north-america) together with [Shwai](https://shwai-he.github.io/). Many thanks to Qualcomm for supporting our research on improving the efficiency of the transformer architecture.  
@@ -56,9 +56,10 @@ Y. Wang\*, **G. Sun\***, W. Ye, G. Qu, A. Li
 Z. Yao, **G. Sun**, L. Borchmann, Z. Shen, M. Deng, B. Zhai, H. Zhang, A. Li, Y. He  
 *arXiv preprint 2025* [[Link](https://arxiv.org/abs/2505.20315)] [[Code](https://github.com/snowflakedb/ArcticTraining/)]  
 
-### <span style="color:#52ADC8">What Matters in Transformers? Not All Attention is Needed</span>  
+### <span style="color:#52ADC8">Uncovering the Redundancy in Transformers via a Unified Study of Layer Dropping</span>
 S. He\*, **G. Sun\***, Z. Shen, A. Li <br>
-*Transactions on Machine Learning Research (TMLR) 2025* [[Link](https://arxiv.org/abs/2406.15786)] [[OpenReview](https://openreview.net/pdf?id=1I7PCbOPfe)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)]
+*Transactions on Machine Learning Research (TMLR) 2026* [[Link](https://arxiv.org/abs/2406.15786)] [[OpenReview](https://openreview.net/pdf?id=1I7PCbOPfe)] [[Code](https://github.com/CASE-Lab-UMD/LLM-Drop)] <br>
+<small>(Early version: *What Matters in Transformers? Not All Attention is Needed*)</small>
 
 ### <span style="color:#52ADC8">Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples</span>
 **G. Sun\***, Y. Fu\*, H. Yang, J. Huang, R. Zhang, H. Wang <br>
@@ -66,19 +67,19 @@ S. He\*, **G. Sun\***, Z. Shen, A. Li <br>
 
 ### <span style="color:#52ADC8">Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild</span>  
 X. Zhao\*, **G. Sun\***, R. Cai\*, Y. Zhou\*, P. Li\*, P. Wang, B. Tan, Y. He, L. Chen, Y. Liang, B. Chen, B. Yuan, H. Wang†, A. Li†, Z. Wang†, T. Chen†  
-*NeurIPS 2024 (Datasets & Benchmarks)* [[Link](https://arxiv.org/abs/...)]
+*NeurIPS 2024 (Datasets & Benchmarks)* [[Link](https://arxiv.org/abs/2410.05357)]
 
 ### <span style="color:#52ADC8">Router-Tuning: A Simple and Effective Approach for Enabling Dynamic-Depth in Transformers</span>  
-S. He, T. Ge, **G. Sun**, et al.  
-*EMNLP 2025 (Main)* [[Link](https://arxiv.org/abs/...)]
+S. He, T. Ge, **G. Sun**, B. Tian, X. Wang, D. Yu <br>
+*EMNLP 2025 (Main)* [[Link](https://arxiv.org/abs/2410.13184)]
 
 ### <span style="color:#52ADC8">Flora: Federated Fine-tuning Large Language Models with Heterogeneous Low-Rank Adaptations</span>  
-Z. Wang, Z. Shen, Y. He, **G. Sun**, et al.  
-*NeurIPS 2024* [[Link](https://arxiv.org/abs/...)]
+Z. Wang, Z. Shen, Y. He, **G. Sun**, H. Wang, L. Lyu, A. Li <br>
+*NeurIPS 2024* [[Link](https://arxiv.org/abs/2409.05976)]
 
 ### <span style="color:#52ADC8">SHED: Shapley-Based Automated Dataset Refinement for Instruction Fine-Tuning</span>  
-Y. He, Z. Wang, Z. Shen, **G. Sun**, et al.  
-*NeurIPS 2024* [[Link](https://arxiv.org/abs/...)]
+Y. He, Z. Wang, Z. Shen, **G. Sun**, Y. Dai, Y. Wu, H. Wang, A. Li <br>
+*NeurIPS 2024* [[Link](https://arxiv.org/abs/2405.00705)]
 
 ---
 
