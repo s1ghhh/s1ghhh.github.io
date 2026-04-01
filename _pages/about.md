@@ -63,7 +63,7 @@ S. He\*, **G. Sun\***, Z. Shen, A. Li <br>
 
 ### <span style="color:#52ADC8">Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples</span>
 **G. Sun\***, Y. Fu\*, H. Yang, J. Huang, R. Zhang, H. Wang <br>
-*IEEE Transactions on Dependable and Secure Computing (TDSC) 2025*
+*IEEE Transactions on Dependable and Secure Computing (TDSC) 2025* [[Link](https://ieeexplore.ieee.org/document/11288041)]
 
 ### <span style="color:#52ADC8">Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild</span>  
 X. Zhao\*, **G. Sun\***, R. Cai\*, Y. Zhou\*, P. Li\*, P. Wang, B. Tan, Y. He, L. Chen, Y. Liang, B. Chen, B. Yuan, H. Wang†, A. Li†, Z. Wang†, T. Chen†  
