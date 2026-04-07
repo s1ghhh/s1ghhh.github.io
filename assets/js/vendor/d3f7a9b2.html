@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Proposal - AR-Guided Robot Data Collection</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: #eee; }
+  .slide {
+    width: 100vw; height: 100vh;
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 60px 100px;
+    position: relative;
+  }
+  .slide.active { display: flex; }
+  .slide-num {
+    position: absolute; bottom: 30px; right: 50px;
+    font-size: 16px; color: #666;
+  }
+  h1 { font-size: 44px; text-align: center; line-height: 1.4; margin-bottom: 30px; color: #fff; }
+  h2 { font-size: 38px; text-align: left; width: 100%; margin-bottom: 40px; color: #4fc3f7; border-bottom: 2px solid #4fc3f7; padding-bottom: 12px; }
+  .subtitle { font-size: 22px; color: #aaa; text-align: center; margin-top: 10px; }
+  .author { font-size: 24px; color: #ccc; margin-top: 30px; text-align: center; }
+  .date { font-size: 20px; color: #888; margin-top: 10px; }
+  ul { font-size: 26px; line-height: 1.9; width: 100%; padding-left: 30px; }
+  li { margin-bottom: 8px; }
+  li strong { color: #4fc3f7; }
+  .highlight { background: #4fc3f7; color: #1a1a2e; padding: 2px 10px; border-radius: 4px; font-weight: bold; }
+  .two-col { display: flex; gap: 60px; width: 100%; align-items: flex-start; }
+  .two-col > div { flex: 1; }
+  .box {
+    background: rgba(79, 195, 247, 0.1); border: 1px solid #4fc3f7;
+    border-radius: 12px; padding: 25px 30px; margin: 15px 0;
+    font-size: 24px; line-height: 1.7; width: 100%;
+  }
+  .box-title { font-size: 22px; color: #4fc3f7; font-weight: bold; margin-bottom: 8px; }
+  .red { color: #ef5350; }
+  .green { color: #66bb6a; }
+  .yellow { color: #fdd835; }
+  .pipeline {
+    display: flex; align-items: center; justify-content: center;
+    gap: 15px; font-size: 22px; margin: 20px 0; flex-wrap: wrap;
+  }
+  .pipeline .step {
+    background: rgba(79, 195, 247, 0.15); border: 1px solid #4fc3f7;
+    border-radius: 10px; padding: 15px 20px; text-align: center; min-width: 160px;
+  }
+  .pipeline .arrow { font-size: 28px; color: #4fc3f7; }
+  table { width: 100%; border-collapse: collapse; font-size: 22px; margin-top: 10px; }
+  th { background: #4fc3f7; color: #1a1a2e; padding: 12px 16px; text-align: left; }
+  td { padding: 12px 16px; border-bottom: 1px solid #333; }
+  tr:hover td { background: rgba(79, 195, 247, 0.05); }
+  .gap-box {
+    background: rgba(239, 83, 80, 0.1); border: 1px solid #ef5350;
+    border-radius: 12px; padding: 20px 30px; margin-top: 25px;
+    font-size: 24px; text-align: center; width: 100%;
+  }
+  .level-card {
+    background: rgba(79, 195, 247, 0.08); border: 1px solid #333;
+    border-radius: 12px; padding: 20px 25px; margin: 10px 0;
+    width: 100%;
+  }
+  .level-card h3 { color: #4fc3f7; font-size: 24px; margin-bottom: 8px; }
+  .level-card p { font-size: 21px; line-height: 1.6; color: #ccc; }
+  .nav-hint {
+    position: fixed; bottom: 10px; left: 50%;
+    transform: translateX(-50%); color: #444; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide active">
+  <h1>AR-Guided Robot Data Collection</h1>
+  <div class="subtitle">Spatial Visualization of Grasp Coverage<br>for Efficient Teleoperation</div>
+  <div class="author">Guoheng Sun</div>
+  <div class="date">ENEE759N — April 7, 2026</div>
+  <div class="slide-num">1 / 8</div>
+</div>
+
+<!-- Slide 2: Problem -->
+<div class="slide">
+  <h2>The Problem</h2>
+  <ul>
+    <li>Imitation learning needs <strong>diverse</strong> demonstration data</li>
+    <li>Current setup: <strong>Quest 3</strong> teleoperation + <strong>RealSense</strong> recording</li>
+    <li>After 100+ demos, operators have <strong class="red">no idea</strong> what's been collected</li>
+  </ul>
+  <div class="box" style="margin-top: 30px;">
+    <div class="box-title">What goes wrong:</div>
+    <span class="red">&#10007;</span> Same grasp angle repeated over and over<br>
+    <span class="red">&#10007;</span> Certain approach directions never attempted<br>
+    <span class="red">&#10007;</span> Trained policy fails on unseen angles
+  </div>
+  <div class="slide-num">2 / 8</div>
+</div>
+
+<!-- Slide 3: Our Idea -->
+<div class="slide">
+  <h2>Our Idea</h2>
+  <div class="box" style="font-size: 28px; text-align: center; padding: 35px;">
+    Show operators <strong>what they've already collected</strong><br>
+    directly in the <span class="highlight">AR headset</span> while they teleoperate<br><br>
+    <span style="font-size: 22px; color: #aaa;">
+      Coverage-aware data collection &rarr; more diverse data &rarr; more robust policy
+    </span>
+  </div>
+  <div class="pipeline" style="margin-top: 40px;">
+    <div class="step">Quest 3<br>Teleoperation</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Record Grasp<br>Trajectories</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Compute<br>Coverage</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step" style="border-color: #66bb6a;">AR Visualize<br>& Guide</div>
+  </div>
+  <div class="slide-num">3 / 8</div>
+</div>
+
+<!-- Slide 4: Related Work -->
+<div class="slide">
+  <h2>Related Work</h2>
+  <table>
+    <tr><th>System</th><th>What it does</th><th>Coverage Guidance?</th></tr>
+    <tr><td>OPEN TEACH (2024)</td><td>Quest 3 teleoperation, multi-robot</td><td class="red">No</td></tr>
+    <tr><td>BEAVR (MIT, 2025)</td><td>Bimanual VR teleop, LeRobot format</td><td class="red">No</td></tr>
+    <tr><td>ARMADA (Apple, 2024)</td><td>AR + robot-free data acquisition</td><td class="red">No</td></tr>
+    <tr><td>ARCap (2024)</td><td>AR feedback for demo collection</td><td class="yellow">Partial</td></tr>
+    <tr><td>ARMimic (2025)</td><td>AR passive demo, 50% faster</td><td class="red">No</td></tr>
+  </table>
+  <div class="gap-box">
+    <strong>Gap:</strong> No system visualizes historical grasp coverage in AR to guide data collection
+  </div>
+  <div class="slide-num">4 / 8</div>
+</div>
+
+<!-- Slide 5: System -->
+<div class="slide">
+  <h2>System Overview</h2>
+  <div class="pipeline">
+    <div class="step">Quest 3<br><small>Operator wears</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Robot Arm<br><small>Executes grasp</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">RealSense x2<br><small>Records RGB-D</small></div>
+  </div>
+  <div style="font-size: 32px; color: #4fc3f7; margin: 15px 0;">&darr; extract end-effector pose + object pose (ArUco) &darr;</div>
+  <div class="pipeline">
+    <div class="step" style="border-color: #66bb6a;">Trajectory<br>History</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step" style="border-color: #66bb6a;">Coverage<br>Heatmap</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step" style="border-color: #66bb6a;">Real-time<br>Guidance</div>
+  </div>
+  <div style="margin-top: 20px; font-size: 22px; color: #aaa; text-align: center;">
+    AR is <strong>only for visualization</strong> &mdash; RealSense captures all real training data
+  </div>
+  <div class="slide-num">5 / 8</div>
+</div>
+
+<!-- Slide 6: Visualization Levels -->
+<div class="slide">
+  <h2>AR Visualization Design</h2>
+  <div class="level-card">
+    <h3>Level 1 &mdash; Gripper Trajectory Replay</h3>
+    <p>3D curves of past end-effector paths &bull; color = success/fail &bull; temporal gradient shows direction &bull; gripper open/close icons at keyframes &bull; button to filter trajectories</p>
+  </div>
+  <div class="level-card">
+    <h3>Level 2 &mdash; Approach Direction Heatmap</h3>
+    <p>Spherical heatmap around the object &bull; red = densely sampled &bull; blue = under-sampled &bull; instantly see which angles are missing</p>
+  </div>
+  <div class="level-card">
+    <h3>Level 3 &mdash; Real-Time Guidance</h3>
+    <p>Arrow pointing to sparsest direction &bull; redundancy alert if angle already covered &bull; live comparison with most similar past trajectory</p>
+  </div>
+  <div class="slide-num">6 / 8</div>
+</div>
+
+<!-- Slide 7: Timeline -->
+<div class="slide">
+  <h2>Timeline</h2>
+  <table>
+    <tr><th>Date</th><th>Task</th></tr>
+    <tr><td><strong>Apr 20</strong></td><td><strong>Build teleoperation pipeline from scratch (Quest 3 &rarr; Robot Arm)</strong></td></tr>
+    <tr><td><strong>Apr 30</strong></td><td><strong>Initial AR visualization (trajectory replay + heatmap) &mdash; Progress Report</strong></td></tr>
+    <tr><td><strong>May 15</strong></td><td><strong>Full visualization system (real-time guidance) &mdash; Final Presentation</strong></td></tr>
+    <tr><td><strong>May 16</strong></td><td><strong>Project website + demo video</strong></td></tr>
+  </table>
+  <div class="slide-num">7 / 8</div>
+</div>
+
+<!-- Slide 8: Summary -->
+<div class="slide">
+  <h2>Summary</h2>
+  <ul style="font-size: 28px; line-height: 2.2;">
+    <li><strong>Problem:</strong> Operators are blind to data coverage during collection</li>
+    <li><strong>Solution:</strong> AR visualization of grasp history + coverage heatmap + guidance</li>
+    <li><strong>Key insight:</strong> AR only guides the human &mdash; all training data is real</li>
+  </ul>
+  <div style="margin-top: 50px; font-size: 26px; color: #4fc3f7; text-align: center;">Thank you! Questions?</div>
+  <div class="slide-num">8 / 8</div>
+</div>
+
+<div class="nav-hint">← → Arrow keys or click to navigate</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') show(current + 1);
+    if (e.key === 'ArrowLeft') show(current - 1);
+  });
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+</script>
+</body>
+</html>
