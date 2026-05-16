@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR-Guided Robot Data Collection</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    background: #fafafa;
+    color: #333;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 30px;
+  }
+  h1 {
+    font-size: 2.2em;
+    color: #1a1a2e;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .subtitle {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 50px;
+  }
+  h2 {
+    font-size: 1.5em;
+    color: #1a1a2e;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #4fc3f7;
+  }
+  h3 {
+    font-size: 1.15em;
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 12px;
+  }
+  p {
+    margin-bottom: 16px;
+    color: #444;
+  }
+  strong { color: #1a1a2e; }
+  ul, ol {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+  li { margin-bottom: 8px; }
+  .hero-img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .video-container {
+    width: 100%;
+    margin: 30px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .video-container video {
+    width: 100%;
+    display: block;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 0.95em;
+  }
+  th {
+    background: #4fc3f7;
+    color: #fff;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  tr:hover td { background: #f5fbff; }
+  .arch-diagram {
+    background: #1a1a2e;
+    color: #eee;
+    font-family: 'Courier New', monospace;
+    padding: 24px 30px;
+    border-radius: 10px;
+    margin: 20px 0;
+    font-size: 0.9em;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .highlight-box {
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-left: 4px solid #4fc3f7;
+    padding: 20px 24px;
+    border-radius: 8px;
+    margin: 24px 0;
+  }
+  .highlight-box p { margin-bottom: 0; color: #333; }
+  .step-card {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 24px;
+    margin: 16px 0;
+    transition: box-shadow 0.2s;
+  }
+  .step-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .step-card h3 {
+    margin-top: 0;
+    color: #4fc3f7;
+  }
+  .badge {
+    display: inline-block;
+    background: #4fc3f7;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  .visual-table td:first-child {
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  footer {
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid #ddd;
+    color: #888;
+    font-size: 0.9em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>AR-Guided Robot Data Collection</h1>
+<p class="subtitle">ENEE759N Course Project &mdash; Guoheng Sun</p>
+
+<div class="video-container">
+  <iframe src="https://drive.google.com/file/d/1MvkLF-O1hGqkeFTAiRvhxh26GdMjJgi-/preview" width="100%" height="506" allow="autoplay" frameborder="0" allowfullscreen></iframe>
+</div>
+
+<h2>Motivation</h2>
+
+<p>Imitation learning requires <strong>diverse</strong> demonstration data to train robust manipulation policies. However, human operators inevitably introduce <strong>systematic biases</strong> during data collection.</p>
+
+<p>Even in the simplest tasks, human behavior is far from uniform. Towse et al. (2014) showed that when people are asked to generate random number sequences, their outputs are systematically biased &mdash; adults tend to prefer smaller numbers, and digits 1&ndash;3 are especially overrepresented. If humans cannot produce unbiased randomness in a <em>one-dimensional</em> number line, it is unreasonable to expect them to uniformly cover a <em>high-dimensional</em> configuration space when teleoperating a robot arm.</p>
+
+<p>In practice, this manifests as:</p>
+
+<ul>
+  <li>Repeating comfortable grasp angles over and over</li>
+  <li>Favoring certain approach directions while neglecting others</li>
+  <li>Having no awareness of what has already been collected after hundreds of demos</li>
+</ul>
+
+<p>This leads to redundant data and trained policies that fail on unseen configurations.</p>
+
+<div class="highlight-box">
+  <p><strong>Our solution:</strong> Overlay real-time spatial guidance in AR while the operator teleoperates, so they can see what they've collected and where coverage gaps remain. Randomized target placement further encourages diverse approach strategies.</p>
+</div>
+
+<p style="font-size:0.85em; color:#888; margin-top:12px;">Reference: Towse, J. N., Loetscher, T., &amp; Brugger, P. (2014). Not all numbers are equal: Preferences and biases among children and adults when generating random sequences. <em>Frontiers in Psychology</em>, 5, 19.</p>
+
+<h2>System Architecture</h2>
+
+<p>The system consists of three hardware modules connected via two networks:</p>
+
+<table>
+  <tr><th>Module</th><th>Role</th></tr>
+  <tr><td><strong>Meta Quest 3</strong></td><td>AR headset worn by the operator. Captures hand motion, sends velocity commands, and renders trajectory visualization through passthrough.</td></tr>
+  <tr><td><strong>NVIDIA Jetson Thor</strong></td><td>On-robot compute. Bridges VR commands to the robot arm, reads end-effector state, and streams it back to Quest 3.</td></tr>
+  <tr><td><strong>UFactory xArm</strong></td><td>6-DOF robot arm with gripper. Executes Cartesian velocity commands and reports end-effector pose relative to its base.</td></tr>
+</table>
+
+<img src="https://lh3.googleusercontent.com/d/1q1sQUZ_IveBzpB_2Q1ukX6WJYl-4dYCf" alt="System Architecture Diagram" class="hero-img">
+<p style="font-size:0.8em; color:#999; text-align:center; margin-top:-20px;">Image generated by OpenAI Image2</p>
+
+<h2>Implementation in Unity</h2>
+
+<p>The Unity project runs on Quest 3 using:</p>
+
+<ul>
+  <li><strong>Meta XR SDK</strong> — OVRManager, passthrough layer for AR view</li>
+  <li><strong>XR Interaction Toolkit</strong> — Controller input via InputDevice API</li>
+  <li><strong>Universal Render Pipeline (URP)</strong> — Transparent/unlit materials for AR overlays</li>
+</ul>
+
+<p>Four scripts handle the full pipeline:</p>
+
+<ol>
+  <li><strong>PassthroughSetup.cs</strong> — Enables camera passthrough so the operator sees the physical world</li>
+  <li><strong>VRHandToROS.cs</strong> — Reads controller motion, computes relative velocity, sends UDP packets to Jetson</li>
+  <li><strong>RobotBaseCalibration.cs</strong> — Calibration, trajectory rendering, gripper markers, and target cube management</li>
+  <li><strong>bridge_ghsun.py</strong> (Jetson) — Translates UDP to ROS2 velocity commands, controls gripper, streams EE position back</li>
+</ol>
+
+<h2>Workflow</h2>
+
+<div class="step-card">
+  <h3><span class="badge">1</span>Hardware Setup</h3>
+  <p>Power on xArm and connect Jetson via Ethernet. Connect Quest 3 to Jetson via WiFi Direct. Launch the xArm ROS2 driver and <code>bridge_ghsun.py</code> on Jetson. Deploy the Unity app to Quest 3.</p>
+</div>
+
+<div class="step-card">
+  <h3><span class="badge">2</span>Calibration</h3>
+  <p>Put on the headset — the real world is visible through passthrough. Place the left controller at the robot arm's base, pointing toward the robot's forward direction. Press <strong>X</strong> to calibrate.</p>
+  <p>This establishes the coordinate mapping between the robot's Cartesian frame and the AR world. RGB axes appear at the origin (Red = X/forward, Green = Y/left, Blue = Z/up), and the first target cube is generated at a random reachable position.</p>
+</div>
+
+<div class="step-card">
+  <h3><span class="badge">3</span>Place Physical Object</h3>
+  <p>A small semi-transparent colored cube with a numbered label and black wireframe edges appears in AR at a random position on the table. The operator takes a real physical cube and places it at the indicated position, aligning it with the AR overlay.</p>
+</div>
+
+<div class="step-card">
+  <h3><span class="badge">4</span>Grasp Demonstration</h3>
+  <p>The operator teleoperates the robot to grasp the cube. Hold the <strong>right trigger</strong> to engage — hand motion maps to robot velocity. Press <strong>right grip</strong> to close/open the gripper.</p>
+  <p>While teleoperating, the system renders real-time visual feedback:</p>
+  <table class="visual-table">
+    <tr><td style="color:#e53935;">Red sphere</td><td>Current end-effector position (live indicator)</td></tr>
+    <tr><td style="color:#00bcd4;">Cyan line</td><td>Trajectory of the end-effector during this trial</td></tr>
+    <tr><td style="color:#1565c0;">Blue cube</td><td>Position where the gripper closed (grasp point)</td></tr>
+    <tr><td style="color:#f9a825;">Yellow cube</td><td>Position where the gripper opened (release point)</td></tr>
+  </table>
+</div>
+
+<div class="step-card">
+  <h3><span class="badge">5</span>Next Trial</h3>
+  <p>After completing a grasp, press <strong>A</strong> to stop recording. The trajectory line is frozen in place. The operator can now freely reposition the arm to a new starting pose without drawing any trajectory.</p>
+  <p>Press <strong>A</strong> again — the previous target cube fades out, a new target appears at a different random location with the next number, and trajectory recording resumes. Place the physical cube at the new position and repeat.</p>
+  <p>All historical trajectories remain visible, giving a cumulative view of spatial coverage across trials.</p>
+  <p>Press <strong>Y</strong> at any time to clear all visualizations and start fresh.</p>
+</div>
+
+<h2>Why This Matters</h2>
+
+<p>By making the operator <strong>aware of their collection history</strong> in real time, the system naturally encourages diverse approach angles and grasp strategies. The combination of AR trajectory visualization and randomized target placement reduces the spatial bias inherent in human demonstration, producing more diverse training data and ultimately more robust imitation learning policies.</p>
+
+<footer>
+  ENEE759N Course Project &mdash; Guoheng Sun, 2026
+</footer>
+
+</div>
+</body>
+</html>

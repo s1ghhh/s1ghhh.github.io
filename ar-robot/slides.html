@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AR-Guided Robot Data Collection — Final Presentation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #1a1a2e; color: #eee; }
+  .slide {
+    width: 100vw; height: 100vh;
+    display: none; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 60px 100px;
+    position: relative;
+  }
+  .slide.active { display: flex; }
+  .slide-num {
+    position: absolute; bottom: 30px; right: 50px;
+    font-size: 16px; color: #666;
+  }
+  h1 { font-size: 52px; text-align: center; line-height: 1.4; margin-bottom: 30px; color: #fff; }
+  h2 { font-size: 44px; text-align: left; width: 100%; margin-bottom: 40px; color: #4fc3f7; border-bottom: 2px solid #4fc3f7; padding-bottom: 12px; }
+  .subtitle { font-size: 26px; color: #aaa; text-align: center; margin-top: 10px; }
+  .author { font-size: 28px; color: #ccc; margin-top: 30px; text-align: center; }
+  .date { font-size: 24px; color: #888; margin-top: 10px; }
+  ul { font-size: 30px; line-height: 1.9; width: 100%; padding-left: 30px; }
+  li { margin-bottom: 8px; }
+  li strong { color: #4fc3f7; }
+  .highlight { background: #4fc3f7; color: #1a1a2e; padding: 2px 10px; border-radius: 4px; font-weight: bold; }
+  .box {
+    background: rgba(79, 195, 247, 0.1); border: 1px solid #4fc3f7;
+    border-radius: 12px; padding: 25px 30px; margin: 15px 0;
+    font-size: 28px; line-height: 1.7; width: 100%;
+  }
+  .box-title { font-size: 26px; color: #4fc3f7; font-weight: bold; margin-bottom: 8px; }
+  .red { color: #ef5350; }
+  .green { color: #66bb6a; }
+  .yellow { color: #fdd835; }
+  .cyan { color: #4fc3f7; }
+  .pipeline {
+    display: flex; align-items: center; justify-content: center;
+    gap: 15px; font-size: 26px; margin: 20px 0; flex-wrap: wrap;
+  }
+  .pipeline .step {
+    background: rgba(79, 195, 247, 0.15); border: 1px solid #4fc3f7;
+    border-radius: 10px; padding: 15px 20px; text-align: center; min-width: 160px;
+  }
+  .pipeline .arrow { font-size: 32px; color: #4fc3f7; }
+  table { width: 100%; border-collapse: collapse; font-size: 26px; margin-top: 10px; }
+  th { background: #4fc3f7; color: #1a1a2e; padding: 12px 16px; text-align: left; }
+  td { padding: 12px 16px; border-bottom: 1px solid #333; }
+  tr:hover td { background: rgba(79, 195, 247, 0.05); }
+  .gap-box {
+    background: rgba(239, 83, 80, 0.1); border: 1px solid #ef5350;
+    border-radius: 12px; padding: 20px 30px; margin-top: 25px;
+    font-size: 28px; text-align: center; width: 100%;
+  }
+  .level-card {
+    background: rgba(79, 195, 247, 0.08); border: 1px solid #333;
+    border-radius: 12px; padding: 20px 25px; margin: 10px 0;
+    width: 100%;
+  }
+  .level-card h3 { color: #4fc3f7; font-size: 28px; margin-bottom: 8px; }
+  .level-card p { font-size: 24px; line-height: 1.6; color: #ccc; }
+  .img-center {
+    width: 100%; max-width: 1400px;
+    border-radius: 10px; margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .video-box {
+    width: 100%; max-width: 1400px;
+    border-radius: 10px; overflow: hidden;
+    margin: 20px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .video-box iframe { width: 100%; display: block; }
+  .ref { font-size: 20px; color: #666; margin-top: 20px; width: 100%; }
+  .nav-hint {
+    position: fixed; bottom: 10px; left: 50%;
+    transform: translateX(-50%); color: #444; font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide active">
+  <h1>AR-Guided Robot Data Collection</h1>
+  <div class="subtitle">Using AR to help operators collect more diverse grasp data</div>
+  <div class="author">Guoheng Sun</div>
+  <div class="date">ENEE759N — May 16, 2026</div>
+  <div class="slide-num">1 / 10</div>
+</div>
+
+<!-- Slide 2: Problem -->
+<div class="slide">
+  <h2>The Problem</h2>
+  <ul>
+    <li>Imitation learning needs <strong>diverse</strong> demonstration data to generalize</li>
+    <li>But humans have <strong class="red">systematic biases</strong> &mdash; we repeat what feels comfortable</li>
+    <li>After 100+ demos, operators have <strong class="red">no idea</strong> which angles or positions are missing</li>
+    <li>Result: trained policy works on seen angles but <strong class="red">fails</strong> on novel ones</li>
+  </ul>
+  <div class="box" style="margin-top: 30px;">
+    <div class="box-title">How biased are humans?</div>
+    Towse et al. (2014) asked people to generate random number sequences. Even in this trivial 1D task, outputs are far from uniform &mdash; adults strongly prefer digits 1&ndash;3.<br><br>
+    If we can't be unbiased picking numbers on a line, we certainly can't uniformly cover a <em>6-DOF robot workspace</em> when teleoperating hundreds of grasp demonstrations.
+  </div>
+  <div class="ref">Towse, J. N., Loetscher, T., &amp; Brugger, P. (2014). Not all numbers are equal. <em>Frontiers in Psychology</em>, 5, 19.</div>
+  <div class="slide-num">2 / 10</div>
+</div>
+
+<!-- Slide 3: Our Idea -->
+<div class="slide">
+  <h2>Our Idea</h2>
+  <div class="box" style="font-size: 28px; text-align: center; padding: 35px;">
+    Show operators <strong>what they've already collected</strong><br>
+    directly in the <span class="highlight">AR headset</span> while they teleoperate<br><br>
+    <span style="font-size: 22px; color: #aaa;">
+      See your history &rarr; avoid repetition &rarr; better coverage &rarr; stronger policy
+    </span>
+  </div>
+  <div class="pipeline" style="margin-top: 40px;">
+    <div class="step">Teleoperate<br>with Quest 3</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Record<br>Trajectories</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Visualize in AR<br>+ Random Targets</div>
+    <div class="arrow">&rarr;</div>
+    <div class="step" style="border-color: #66bb6a;">More Diverse<br>Data</div>
+  </div>
+  <div class="slide-num">3 / 10</div>
+</div>
+
+<!-- Slide 4: System Architecture -->
+<div class="slide">
+  <h2>System Architecture</h2>
+  <img src="https://lh3.googleusercontent.com/d/1q1sQUZ_IveBzpB_2Q1ukX6WJYl-4dYCf" alt="System Architecture" class="img-center">
+  <div style="font-size:14px; color:#666; margin-top:-10px;">Image generated by OpenAI Image2</div>
+  <div class="pipeline" style="margin-top: 20px;">
+    <div class="step">Quest 3<br><small>AR + Control</small></div>
+    <div class="arrow">UDP<br>&harr;</div>
+    <div class="step">Jetson Thor<br><small>Bridge</small></div>
+    <div class="arrow">ROS2<br>&harr;</div>
+    <div class="step">xArm 6-DOF<br><small>Executes</small></div>
+  </div>
+  <div class="slide-num">4 / 10</div>
+</div>
+
+<!-- Slide 5: How It Works — Communication -->
+<div class="slide">
+  <h2>Communication</h2>
+  <ul>
+    <li><strong>Quest 3 &rarr; Jetson:</strong> Operator holds the trigger; Quest 3 computes <strong>relative hand displacement</strong> from the lock-in position and sends it as a velocity command (UDP 5005)</li>
+    <li><strong>Jetson &rarr; xArm:</strong> Bridge scales the velocity and forwards it to the robot via ROS2 Cartesian velocity control; gripper is toggled via xArm SDK</li>
+    <li><strong>xArm &rarr; Jetson:</strong> Robot API returns the end-effector position <strong>relative to its base</strong> (the origin)</li>
+    <li><strong>Jetson &rarr; Quest 3:</strong> Bridge sends back the end-effector position + gripper state (UDP 5006, 3Hz); Quest 3 renders it in AR</li>
+  </ul>
+  <div class="pipeline" style="margin-top: 30px;">
+    <div class="step">Quest 3<br><small>hand &Delta; &rarr; velocity</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Jetson<br><small>bridge</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">xArm<br><small>move + report EE</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Jetson<br><small>forward EE pose</small></div>
+    <div class="arrow">&rarr;</div>
+    <div class="step">Quest 3<br><small>AR render</small></div>
+  </div>
+  <div class="slide-num">5 / 10</div>
+</div>
+
+<!-- Slide 6: Calibration -->
+<div class="slide">
+  <h2>Calibration</h2>
+  <div class="box" style="margin-bottom: 25px;">
+    <div class="box-title">The core challenge:</div>
+    The robot and Unity have <strong>two different coordinate systems</strong>. The robot API gives us the end-effector position relative to its base. To render this in AR, we need a mapping between the two coordinate systems.
+  </div>
+  <ul>
+    <li>The operator places the left controller at the robot base and presses <strong>X</strong></li>
+    <li>This records <em>where the robot's origin is</em> in Unity's world, and <em>which direction is forward</em></li>
+    <li>Now we have the mapping &mdash; any position the robot reports can be converted to a Unity world position and rendered in AR</li>
+  </ul>
+  <div class="box" style="margin-top: 25px;">
+    <div class="box-title">Coordinate conversion:</div>
+    Robot (Z-up): &nbsp; X = forward, Y = left, Z = up<br>
+    Unity (Y-up): &nbsp; Z = forward, X = right, Y = up<br><br>
+    Mapping: &nbsp; <strong>Unity.x = &minus;robot.y, &nbsp; Unity.y = robot.z, &nbsp; Unity.z = robot.x</strong>
+  </div>
+  <div class="slide-num">6 / 10</div>
+</div>
+
+<!-- Slide 7: Workflow -->
+<div class="slide">
+  <h2>Data Collection Workflow</h2>
+  <div class="level-card">
+    <h3>Step 1 &mdash; Hardware Setup</h3>
+    <p>Power on xArm, connect Jetson via Ethernet. Connect Quest 3 to Jetson via WiFi Direct. Launch xArm ROS2 driver and bridge on Jetson. Deploy the Unity app to Quest 3.</p>
+  </div>
+  <div class="level-card">
+    <h3>Step 2 &mdash; Calibration</h3>
+    <p>Put on the headset &mdash; the real world is visible through passthrough. Place the left controller at the robot arm's base, pointing forward. Press <strong>X</strong> to calibrate. RGB axes appear at the origin, and the first target cube is generated at a random reachable position.</p>
+  </div>
+  <div class="level-card">
+    <h3>Step 3 &mdash; Place the Physical Object</h3>
+    <p>A small semi-transparent colored cube with a numbered label and black wireframe edges appears in AR. The operator places a real physical cube at that position, aligning it with the AR overlay.</p>
+  </div>
+  <div class="level-card">
+    <h3>Step 4 &mdash; Grasp Demonstration</h3>
+    <p>Hold <strong>right trigger</strong> to teleoperate &mdash; hand motion maps to robot velocity. Press <strong>grip</strong> to close/open the gripper. The trajectory draws in real time (cyan line). Blue/yellow markers appear at grasp/release points.</p>
+  </div>
+  <div class="level-card">
+    <h3>Step 5 &mdash; Next Trial</h3>
+    <p>Press <strong>A</strong> to stop recording. The trajectory is frozen. Reposition the arm to a new starting pose. Press <strong>A</strong> again &mdash; the old target fades, a new target appears at a different random location, and recording resumes. All historical trajectories stay visible. Press <strong>Y</strong> to clear everything and start fresh.</p>
+  </div>
+  <div class="slide-num">7 / 10</div>
+</div>
+
+<!-- Slide 8: Visualization -->
+<div class="slide">
+  <h2>What You See in AR</h2>
+  <table>
+    <tr><th>Visual</th><th>Meaning</th></tr>
+    <tr><td><span class="red" style="font-size:32px;">&#9679;</span> Red sphere</td><td>Live end-effector position</td></tr>
+    <tr><td><span class="cyan" style="font-size:32px;">&#9473;</span> Cyan line</td><td>Trajectory during current trial</td></tr>
+    <tr><td><span style="color:#1565c0; font-size:32px;">&#9632;</span> Blue cube</td><td>Where the gripper closed (grasp point)</td></tr>
+    <tr><td><span class="yellow" style="font-size:32px;">&#9632;</span> Yellow cube</td><td>Where the gripper opened (release point)</td></tr>
+    <tr><td><span class="green" style="font-size:32px;">&#9632;</span> Colored target</td><td>Randomized grasp target with number label</td></tr>
+    <tr><td><span style="color:#888; font-size:32px;">&#9632;</span> Faded targets</td><td>Completed trials (history stays visible)</td></tr>
+  </table>
+  <div class="slide-num">8 / 10</div>
+</div>
+
+<!-- Slide 9: Demo -->
+<div class="slide">
+  <h2>Demo</h2>
+  <div class="video-box">
+    <iframe src="https://drive.google.com/file/d/1MvkLF-O1hGqkeFTAiRvhxh26GdMjJgi-/preview" width="100%" height="620" allow="autoplay" frameborder="0" allowfullscreen style="border-radius:10px;"></iframe>
+  </div>
+  <div class="slide-num">9 / 10</div>
+</div>
+
+<!-- Slide 10: Summary -->
+<div class="slide">
+  <h2>Summary</h2>
+  <ul style="font-size: 28px; line-height: 2.2;">
+    <li><strong>Problem:</strong> Humans have spatial bias &rarr; redundant demo data &rarr; weak policies</li>
+    <li><strong>Solution:</strong> AR passthrough with trajectory history + randomized target placement</li>
+    <li><strong>System:</strong> Quest 3 + Jetson Thor + xArm 6-DOF, all connected by lightweight UDP</li>
+    <li><strong>Key insight:</strong> AR only guides the human &mdash; no extra hardware needed for visualization</li>
+    <li><strong>Result:</strong> Operator is aware of coverage, naturally explores more diverse strategies</li>
+  </ul>
+  <div style="margin-top: 50px; font-size: 26px; color: #4fc3f7; text-align: center;">Thank you! Questions?</div>
+  <div class="slide-num">10 / 10</div>
+</div>
+
+<div class="nav-hint">&larr; &rarr; Arrow keys or click to navigate</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  function show(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') show(current + 1);
+    if (e.key === 'ArrowLeft') show(current - 1);
+  });
+  document.addEventListener('click', e => {
+    if (e.clientX > window.innerWidth / 2) show(current + 1);
+    else show(current - 1);
+  });
+</script>
+</body>
+</html>
