@@ -43,6 +43,8 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 
 ## Publications
 
+<small>\* denotes equal contribution &nbsp;&nbsp; † denotes equal supervision</small>
+
 ### <span style="color:#52ADC8">ROCKET: Residual-Oriented Multi-Layer Alignment for Spatially-Aware Vision-Language-Action Models</span>
 **G. Sun**, T. Du, K. Feng, C. Luo, X. Ding, Z. Shen, Z. Wang, Y. He, A. Li <br>
 *arXiv preprint 2026* [[Link](https://arxiv.org/abs/2602.17951)]
