@@ -16,7 +16,7 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 
 ## Research Interests
 
-- Efficient foundation models (LLM / VLM / VLA / WAM)  
+- Efficient Foundation Models (LLM / VLM / VLA / WAM)  
 - LLM Privacy and Safety Alignment  
 - Pretraining and Reasoning in LLMs  
 
