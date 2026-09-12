@@ -24,21 +24,20 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 
 ## What's New
 
-- [2026.08] Our work *CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs* was accepted at **Findings of EMNLP 2026**.
-- [2026.05] Our work *Demystifying When Pruning Works via Representation Hierarchies* was accepted at **ICML 2026**.
-- [2026.04] Our work *Invisible Tokens, Visible Bills* was accepted at **ICML 2026 (Position Paper Track)**.
-- [2026.04] Our work *VeriReason* was accepted at **ACM GLSVLSI 2026**.
-- [2026.04] Our work *Arctic-Text2SQL-R1* was accepted at **Findings of ACL 2026**.
-- [2026.03] Our work *TOPCELL: Topology Optimization of Standard Cell via LLMs* was accepted at **DAC 2026**.
-- [2026.02] Our work *Uncovering the Redundancy in Transformers via a Unified Study of Layer Dropping* was accepted at **TMLR**.
-- [2025.11] Our work *Invisible Tokens, Visible Bills* was selected as one of 9 **Orals** at the ResponsibleFM Workshop @ NeurIPS 2025.
-- [2025.10] Our work *Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples* was accepted at **IEEE TDSC**.
-- [2025.09] Our work *SymRTLO* was accepted at **NeurIPS 2025**.
+- [2026.08] Our work [*CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs*](https://arxiv.org/pdf/2505.13778) was accepted at **Findings of EMNLP 2026**.
+- [2026.05] Our works [*Demystifying When Pruning Works via Representation Hierarchies*](https://arxiv.org/pdf/2603.24652) and [*Invisible Tokens, Visible Bills*](https://arxiv.org/pdf/2505.18471) were accepted at **ICML 2026** (the latter in the **Position Paper Track**).
+- [2026.04] Our work [*VeriReason: Reinforcement Learning with Testbench Feedback for Reasoning-Enhanced Verilog Generation*](https://arxiv.org/pdf/2505.11849) was accepted at **ACM GLSVLSI 2026**.
+- [2026.04] Our work [*Arctic-Text2SQL-R1: Simple Rewards, Strong Reasoning in Text-to-SQL*](https://arxiv.org/pdf/2505.20315) was accepted at **Findings of ACL 2026**.
+- [2026.03] Our work [*TOPCELL: Topology Optimization of Standard Cell via LLMs*](https://arxiv.org/pdf/2604.14237) was accepted at **DAC 2026**.
+- [2026.02] Our work [*Uncovering the Redundancy in Transformers via a Unified Study of Layer Dropping*](https://arxiv.org/pdf/2406.15786) was accepted at **TMLR**.
+- [2025.11] Our work [*Invisible Tokens, Visible Bills*](https://arxiv.org/pdf/2505.18471) was selected as one of 9 **Orals** at the ResponsibleFM Workshop @ NeurIPS 2025.
+- [2025.10] Our work [*Enhancing the Security of Large Character Set CAPTCHAs Using Transferable Adversarial Examples*](https://ieeexplore.ieee.org/document/11288041) was accepted at **IEEE TDSC**.
+- [2025.09] Our work [*SymRTLO: Enhancing RTL Code Optimization with LLMs and Neuron-Inspired Symbolic Reasoning*](https://arxiv.org/pdf/2504.10369) was accepted at **NeurIPS 2025**.
 - [2025.05] Started my research internship at [Snowflake AI Research](https://www.snowflake.com/en/blog/authors/snowflake-ai-research/), working with [Zhewei Yao](https://yaozhewei.github.io/) & [Yuxiong He](https://www.snowflake.com/en/blog/authors/yuxiong-he/) on reinforcement learning for Text-to-SQL.
 - [2025.05] I am very honored to receive the [Qualcomm Innovation Fellowship](https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-north-america) together with [Shwai](https://shwai-he.github.io/). Many thanks to Qualcomm for supporting our research on improving the efficiency of the transformer architecture.  
 - [2025.05] Our model `Arctic-Text2SQL-R1-32B` achieved **Top 1** on the [BIRD-SQL Leaderboard](https://bird-bench.github.io/).  
-- [2024.11] Our work *Model-GLUE* was accepted at **NeurIPS 2024 (Datasets & Benchmarks Track)**.  
-- [2024.11] Our work *SHED* and *Flora* were accepted at **NeurIPS 2024**.  
+- [2024.11] Our work [*Model-GLUE: Democratized LLM Scaling for A Large Model Zoo in the Wild*](https://arxiv.org/pdf/2410.05357) was accepted at **NeurIPS 2024 (Datasets & Benchmarks Track)**.  
+- [2024.11] Our works [*SHED*](https://arxiv.org/pdf/2405.00705) and [*Flora*](https://arxiv.org/pdf/2409.05976) were accepted at **NeurIPS 2024**.  
 
 ---
 
@@ -51,6 +50,10 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 ### <span style="color:#52ADC8">Drop-Then-Recovery: How Redundant Are Vision-Language-Action Models?</span>
 **G. Sun**, K. Feng, S. He, X. Gong, Y. He, Z. Wang, Z. Shen, W. Ye, R. R. Kompella, G. Liu, A. Li <br>
 *arXiv preprint 2026* [[Link](https://arxiv.org/abs/2606.27755)]
+
+### <span style="color:#52ADC8">Vision-Language-Action in Robotics: A Survey of Datasets, Benchmarks, and Data Engines</span>
+Z. Wang, B. Wang, H. Zhang, T. Du, T. Chen, **G. Sun**, Y. He, Z. Shen, W. Ye, A. Li <br>
+*Transactions on Machine Learning Research (TMLR) 2026* [[Link](https://arxiv.org/abs/2604.23001)] [[OpenReview](https://openreview.net/forum?id=tAaWFpvnmm)] [[Code](https://github.com/ziyaow1010/vla-datasets-benchmarks)]
 
 ### <span style="color:#52ADC8">CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs</span>
 **G. Sun**, Z. Wang, B. Tian, M. Liu, Z. Shen, S. He, Y. He, W. Ye, Y. Wang, A. Li <br>
@@ -117,7 +120,7 @@ Y. He, Z. Wang, Z. Shen, **G. Sun**, Y. Dai, Y. Wu, H. Wang, A. Li <br>
 
 ## Awards
 
-- **Qualcomm Innovation Fellowship**, Qualcomm, 2025  
+- **[Qualcomm Innovation Fellowship](https://www.qualcomm.com/research/university-relations/innovation-fellowship/2025-north-america)**, Qualcomm, 2025  
 - **Dean’s Fellowship**, University of Maryland, 2024  
 - **National Scholarship**, Ministry of Education of China, 2022  
 
