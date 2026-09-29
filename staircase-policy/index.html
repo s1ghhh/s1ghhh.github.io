@@ -4,144 +4,499 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks</title>
-<meta name="description" content="Project page for Staircase Policy (S-WAM), a streaming inference and training framework for World-Action Models.">
+<meta name="description" content="Staircase Policy (S-WAM): a streaming inference and training framework for World-Action Models with large action chunks.">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    font-family: 'Segoe UI', -apple-system, sans-serif;
-    background: #fafafa;
-    color: #333;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff;
+    color: #2b2b2b;
     line-height: 1.7;
+    font-size: 16px;
   }
-  .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 60px 30px;
-  }
+  .container { max-width: 940px; margin: 0 auto; padding: 56px 28px 80px; }
+
+  /* ---- header ---- */
   h1 {
-    font-size: 2.2em;
-    color: #1a1a2e;
-    margin-bottom: 18px;
-    line-height: 1.3;
+    font-size: 1.95em;
+    font-weight: 600;
+    color: #14141e;
+    line-height: 1.32;
     text-align: center;
+    letter-spacing: -0.01em;
+    margin: 0 auto 22px;
   }
+  /* explicit three-line break; dropped on narrow screens so the title
+     re-wraps naturally instead of breaking twice over */
+  h1 br { display: inline; }
+  .authors { text-align: center; font-size: 1.02em; margin-bottom: 10px; }
+  .authors a { color: #1a5fb4; text-decoration: none; }
+  .authors a:hover { text-decoration: underline; }
+  .authors span { white-space: nowrap; display: inline-block; margin: 0 7px; }
+  .affil { text-align: center; font-size: 0.93em; color: #666; }
+  .affil span { white-space: nowrap; display: inline-block; margin: 0 9px; }
+
+  /* ---- link buttons ---- */
+  .links { text-align: center; margin: 30px 0 8px; }
+  .links a, .links span {
+    display: inline-block;
+    margin: 5px 4px;
+    padding: 9px 20px;
+    border-radius: 22px;
+    text-decoration: none;
+    font-size: 0.93em;
+  }
+  .links a { background: #14141e; color: #fff; }
+  .links a:hover { background: #3a3a48; }
+  .links span { background: #eee; color: #999; cursor: default; }
+
+  /* ---- video ---- */
+  .video-wrap { margin: 34px 0 0; }
+
+  /* ---- teaser: image + caption side by side, so the block spans the same
+         width as the video above it instead of floating narrow and centred ---- */
+  .teaser {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 26px 0 6px;
+  }
+  .teaser img { width: 47%; max-width: 430px; height: auto; flex: none; }
+  .teaser-cap {
+    flex: 1;
+    font-size: 0.89em;
+    color: #666;
+    line-height: 1.68;
+    text-align: left;
+  }
+  .teaser-cap b { color: #2b2b2b; }
+  .video-wrap video, .video-wrap iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 8px;
+    background: #000;
+  }
+
+  /* ---- sections ---- */
   h2 {
-    font-size: 1.5em;
-    color: #1a1a2e;
-    margin-top: 50px;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #4fc3f7;
+    font-size: 1.32em;
+    font-weight: 600;
+    color: #14141e;
+    margin-top: 54px;
+    margin-bottom: 18px;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #e2e2e2;
   }
-  .authors {
-    text-align: center;
-    font-size: 1.05em;
+  h3 {
+    font-size: 1.04em;
+    font-weight: 600;
+    color: #14141e;
+    margin-top: 32px;
     margin-bottom: 8px;
   }
-  .authors span { white-space: nowrap; margin: 0 6px; }
-  .affil {
-    text-align: center;
-    font-size: 0.95em;
+  p { margin-bottom: 14px; text-align: justify; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---- figures ---- */
+  figure { margin: 26px auto; text-align: center; }
+  figure img { max-width: 100%; height: auto; }
+  figcaption {
+    font-size: 0.88em;
     color: #666;
-    margin-bottom: 4px;
+    margin: 12px auto 0;
+    text-align: left;
+    line-height: 1.6;
+    max-width: 780px;
   }
-  .affil span { white-space: nowrap; margin: 0 8px; }
-  .note {
-    text-align: center;
-    font-size: 0.85em;
-    color: #888;
-    margin-top: 10px;
-  }
-  .links {
-    text-align: center;
-    margin: 36px 0 10px;
-  }
-  .links a, .links span.disabled {
-    display: inline-block;
-    margin: 6px 6px;
-    padding: 10px 22px;
-    border-radius: 24px;
-    text-decoration: none;
-    font-size: 0.95em;
-  }
-  .links a {
-    background: #1a1a2e;
-    color: #fff;
-  }
-  .links a:hover { background: #333; }
-  .links span.disabled {
-    background: #e0e0e0;
-    color: #999;
-    cursor: default;
-  }
-  .banner {
-    background: #fff8e1;
-    border: 1px solid #ffe082;
+  figcaption b { color: #2b2b2b; }
+  /* width classes, chosen per figure aspect ratio */
+  .fig-xs img { max-width: 400px; width: 100%; }
+  .fig-md img { max-width: 640px; width: 100%; }
+
+  /* ---- highlight numbers ---- */
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 6px; }
+  .stat {
+    flex: 1 1 160px;
+    border: 1px solid #e2e2e2;
     border-radius: 8px;
-    padding: 16px 20px;
-    margin: 40px 0 0;
+    padding: 16px 14px;
     text-align: center;
-    color: #6d4c00;
   }
-  .abstract {
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 8px;
-    padding: 24px 28px;
-    text-align: justify;
+  .stat .num { font-size: 1.5em; font-weight: 600; color: #14141e; line-height: 1.25; }
+  .stat .lbl { font-size: 0.82em; color: #777; margin-top: 4px; }
+
+  /* ---- tables ---- */
+  .table-wrap { overflow-x: auto; margin: 18px 0 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.87em; }
+  th, td { padding: 7px 10px; text-align: right; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { border-bottom: 1.5px solid #333; font-weight: 600; }
+  tbody tr.group-start td { border-top: 1px solid #ddd; }
+  tbody tr:last-child td { border-bottom: 1.5px solid #333; }
+  tr.ours { background: #f4f8fd; }
+  td.best, th.best { font-weight: 600; color: #14141e; }
+  td.sub { padding-left: 26px; }
+  .tcap { font-size: 0.88em; color: #666; margin-bottom: 2px; line-height: 1.6; text-align: left; }
+  .tcap b { color: #2b2b2b; }
+
+  ul { margin: 0 0 14px 1.2em; }
+  li { margin-bottom: 7px; }
+
+  pre {
+    background: #f6f6f6;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-size: 0.84em;
+    line-height: 1.55;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
+
   footer {
-    margin-top: 60px;
-    padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
+    margin-top: 64px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e2e2;
     text-align: center;
     font-size: 0.85em;
-    color: #888;
+    color: #999;
   }
-  footer a { color: #888; }
-  @media (max-width: 600px) {
-    .container { padding: 40px 18px; }
-    h1 { font-size: 1.6em; }
+  footer a { color: #999; }
+
+  @media (max-width: 720px) {
+    .container { padding: 36px 18px 60px; }
+    h1 { font-size: 1.42em; }
+    h1 br { display: none; }
+    body { font-size: 15px; }
+    p { text-align: left; }
+    .teaser { flex-direction: column; gap: 16px; }
+    .teaser img { width: 100%; max-width: 440px; margin: 0 auto; }
   }
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks</h1>
+<h1>Staircase Policy: Streaming Inference<br>for World-Action Models<br>with Large Action Chunks</h1>
 
 <div class="authors">
   <span>Guoheng Sun<sup>1</sup></span>
   <span>Chen Chen<sup>2</sup></span>
   <span>Jin Wang<sup>3</sup></span>
   <span>Ang Li<sup>1</sup></span>
-  <span>Lingjuan Lyu<sup>2</sup></span>
+  <span>Teresa Lv<sup>2</sup></span>
 </div>
-
 <div class="affil">
   <span><sup>1</sup>University of Maryland, College Park</span>
   <span><sup>2</sup>Independent Researcher</span>
-</div>
-<div class="affil">
   <span><sup>3</sup>Oxford Robotics Institute, University of Oxford</span>
 </div>
 
 <div class="links">
-  <span class="disabled">arXiv (coming soon)</span>
-  <span class="disabled">Code (coming soon)</span>
+  <span>arXiv (coming soon)</span>
+  <span>Code (coming soon)</span>
 </div>
 
-<div class="banner">
-  <strong>This page is under construction.</strong><br>
-  The paper, code, and videos will be posted here shortly.
+<!-- ============================================================
+     VIDEO SLOT  —  currently holding a generated placeholder clip.
+
+     To use the real video: overwrite static/videos/overview.mp4 and
+     static/videos/overview_poster.jpg. Nothing below needs to change.
+     Keep the mp4 H.264 / yuv420p with +faststart so it streams rather
+     than fully downloading before playback.
+
+     To use YouTube instead, replace the whole <video> element with:
+     <iframe src="https://www.youtube.com/embed/VIDEO_ID"
+             title="Staircase Policy overview video"
+             allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
+             allowfullscreen></iframe>
+     ============================================================ -->
+<div class="video-wrap">
+  <video controls muted loop playsinline preload="metadata"
+         poster="static/videos/overview_poster.jpg">
+    <source src="static/videos/overview.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+    <a href="static/videos/overview.mp4">Download the video</a> instead.
+  </video>
+</div>
+
+<div class="teaser">
+  <img src="static/images/fig_speed_sr.png" alt="Success rate versus measured inference throughput on LIBERO.">
+  <div class="teaser-cap">
+    <b>Success rate versus measured inference throughput on LIBERO.</b> Existing methods show a
+    clear speed&ndash;accuracy trade-off: policies with higher success often rely on shorter
+    replanning intervals and larger backbones, while faster policies achieve lower success. S-WAM
+    reaches 97.7% at 292.7 executed actions per second, matching the highest success rate at
+    1.8&times; the throughput of the next-fastest method shown.
+  </div>
 </div>
 
 <h2>Abstract</h2>
 
-<div class="abstract">
-<p>World-Action Models (WAMs) improve robotic manipulation by conditioning action generation on predicted future observations, but future prediction adds further inference overhead to already expensive iterative action generation. Action chunking can amortize this cost over multiple actions, yet performance degrades over long execution horizons because later actions remain conditioned on stale observations. We introduce <strong>Staircase Policy</strong>, a streaming inference and training framework that turns a flow-matching VLA into a JEPA-style WAM and partitions a large action chunk into sub-chunks at staggered denoising stages. Near-term actions are executed as soon as they become available, while later actions continue to be refined. At each sub-chunk boundary, the future latent is re-predicted from the latest observation and used to update all unexecuted actions, enabling long-horizon execution without repeated full policy inference. The resulting future-prediction error can further serve as a signal for adaptive chunking.</p>
-<p style="margin-top:14px;"><strong>S-WAM</strong> achieves 97.7% on LIBERO and 87.9% on LIBERO-Plus, and improves performance across multiple policy backbones and real-robot tasks. It reaches 292.7 executed actions per second, 3.62&times; the throughput of conventional execution at comparable accuracy, while reducing time-to-first-action from 123.6 to 73.3&nbsp;ms. With additional inference optimizations, throughput further increases to 642.9 actions per second.</p>
+<p>World-Action Models (WAMs) improve robotic manipulation by conditioning action generation on
+predicted future observations, but future prediction adds further inference overhead to already
+expensive iterative action generation. Action chunking can amortize this cost over multiple
+actions, yet performance degrades over long execution horizons because later actions remain
+conditioned on stale observations.</p>
+
+<p>We introduce <b>Staircase Policy</b>, a streaming inference and training framework that turns a
+flow-matching VLA into a JEPA-style WAM and partitions a large action chunk into sub-chunks at
+staggered denoising stages. Near-term actions are executed as soon as they become available, while
+later actions continue to be refined. At each sub-chunk boundary, the future latent is re-predicted
+from the latest observation and used to update all unexecuted actions, enabling long-horizon
+execution without repeated full policy inference. The resulting future-prediction error can further
+serve as a signal for adaptive chunking.</p>
+
+<div class="stats">
+  <div class="stat"><div class="num">97.7%</div><div class="lbl">LIBERO success rate</div></div>
+  <div class="stat"><div class="num">87.9%</div><div class="lbl">LIBERO-Plus success rate</div></div>
+  <div class="stat"><div class="num">3.62&times;</div><div class="lbl">throughput vs. vanilla</div></div>
+  <div class="stat"><div class="num">&minus;40.7%</div><div class="lbl">time to first action</div></div>
 </div>
+
+<h2>Method</h2>
+
+<figure>
+  <img src="static/images/fig_method.png" alt="Overview of Staircase Policy.">
+  <figcaption><b>Overview of Staircase Policy.</b> Here <i>t<sub>i</sub></i> denotes a time step and
+  <i>t<sub>i</sub></i><sup>*</sup> the predicted future.</figcaption>
+</figure>
+
+<p>Staircase Policy adds a lightweight <b>future predictor</b> to a flow-matching VLA: a frozen
+vision encoder gives <i>h</i> = <i>E</i>(<i>o</i>), and a decoder <i>g</i> predicts the feature map
+of a near-future observation. The action expert is conditioned on the current observation, the
+predicted future latent, and the cached semantic context. Two properties of long-horizon action
+generation motivate the design.</p>
+
+<h3>1. Denoising requirements vary across the action horizon</h3>
+<p>Near-term actions are easier to predict than actions farther into the future. Because
+flow-matching trajectories are approximately straight, a single velocity evaluation already gives a
+useful estimate toward the data endpoint. We therefore partition the chunk into <i>K</i> sub-chunks
+of size <i>G</i> (<i>H</i> = <i>KG</i>; we use <i>H</i>=50, <i>K</i>=5, <i>G</i>=10), emit the first
+sub-chunk after one denoising step, and give each subsequent sub-chunk one step more. All buffer
+positions stay at the same flow time, so the expert always sees the shared-&tau; distribution it was
+trained on.</p>
+
+<h3>2. Visual conditioning should be refreshed during execution</h3>
+<p>Object poses, contacts and robot configuration change during execution, while the instruction and
+high-level semantics stay fixed within a chunk. We therefore refresh only the lightweight
+vision-side future predictor at each sub-chunk boundary and reuse the cached vision-language
+context: the expensive backbone runs <b>one forward pass per chunk</b>, the predictor once per
+boundary at millisecond-scale cost. Each refreshed condition is applied to all unexecuted positions,
+so a change observed mid-chunk influences every later action without a full replan.</p>
+
+<h3>Training under the deployment schedule</h3>
+<p>Standard training never exposes the policy to partially denoised buffers, one-step readouts,
+mid-chunk changes in conditioning, or self-predicted future latents. We therefore train under the
+same streaming schedule used at deployment, supervising the readout the controller actually
+consumes rather than the velocity.</p>
+
+<h3>Future-prediction error as a chunking signal</h3>
+<p>Because the refresh runs as a chain, every boundary yields a prediction&ndash;realization pair
+that a policy denoising the chunk only once never has. The discrepancy grows when the scene departs
+from what the model anticipated, so thresholding it makes the executed horizon data-dependent
+rather than fixed at <i>K</i> sub-chunks.</p>
+
+<h2>Experiments</h2>
+
+<p>We evaluate on three simulation benchmarks: <b>LIBERO</b> (four suites of ten tasks),
+<b>LIBERO-Plus</b> (seven perturbation categories over the same tasks), and <b>DOMINO</b>
+(dynamic manipulation with scene changes during execution), plus nine real-robot tasks. Unless
+otherwise specified the base VLA is a 2.3B latent World-Action Model. Within each backbone, S-WAM
+and the vanilla baseline use the same data, initialization and training configuration. For every
+50 executed actions, S-WAM with <i>K</i>=5 and vanilla execution at
+<i>H</i><sub>exec</sub>=50 both require five denoiser passes and one backbone pass, so
+<i>H</i><sub>exec</sub>=50 is the <b>compute-matched</b> baseline and <i>H</i><sub>exec</sub>=10 the
+conventional short-horizon baseline.</p>
+
+<h3>Real-robot experiments</h3>
+<p>Nine tasks on a UFACTORY xArm 850 with the policy running onboard an NVIDIA Jetson Thor, 30
+teleoperated demonstrations per task collected with a Meta Quest 3, and 40 evaluation trials each.
+Six of the nine are static and dynamic versions of three manipulation skills, counted separately;
+in the dynamic version the target objects move continuously on a rotating turntable. The remaining
+three cover sustained, precise, and multi-stage manipulation.</p>
+
+<figure>
+  <img src="static/images/fig_real.png" alt="Real-robot results on nine tasks.">
+  <figcaption><b>Real-robot results on nine tasks.</b> S-WAM against vanilla execution at
+  <i>H</i><sub>exec</sub>=20 and <i>H</i><sub>exec</sub>=50.</figcaption>
+</figure>
+
+<p>On the six static tasks S-WAM reaches <b>72.5</b> success, compared with 67.5 for vanilla at
+<i>H</i><sub>exec</sub>=20 and 57.1 at <i>H</i><sub>exec</sub>=50; the drop at 50 reflects the
+limitation of vanilla large-chunk execution over long horizons. The dynamic tasks expose the
+limitations of both vanilla regimes. Frequent replanning is affected by inference latency while the
+scene continues to move, yielding only 10.8 at <i>H</i><sub>exec</sub>=20. Executing 50 actions per
+query improves this to 25.8, but later actions accumulate prediction drift over the long execution
+horizon. S-WAM instead updates the unexecuted actions from new observations and reaches
+<b>44.2</b>.</p>
+
+<h3>Robustness on LIBERO-Plus</h3>
+<p class="tcap"><b>Success rate (%) across seven perturbation dimensions.</b> S-WAM achieves the
+best average, 87.9%, outperforming the compute-matched vanilla baseline by 17.3 points. Robot
+initial-state perturbation is where that baseline is weakest (49.7); S-WAM reaches 76.0 there, the
+best score in the table, consistent with the benefit coming from re-observing scene geometry during
+execution.</p>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Method</th><th>Background</th><th>Robot</th><th>Camera</th><th>Language</th>
+      <th>Noise</th><th>Layout</th><th>Light</th><th>Avg.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>ST-WAM</td><td>74.2</td><td>60.1</td><td>55.4</td><td>79.3</td><td>79.5</td><td>74.3</td><td>93.0</td><td>73.7</td></tr>
+    <tr><td>DreamWAM</td><td>71.5</td><td>63.6</td><td>53.7</td><td class="best">94.8</td><td>67.1</td><td>80.7</td><td>96.6</td><td>75.4</td></tr>
+    <tr><td>VLA-JEPA</td><td>93.6</td><td>67.1</td><td>63.3</td><td>85.4</td><td>66.3</td><td>85.1</td><td>95.6</td><td>79.5</td></tr>
+    <tr><td>ROCKET-VLA</td><td>91.8</td><td>41.8</td><td class="best">91.8</td><td>78.0</td><td>92.5</td><td>81.2</td><td>94.7</td><td>81.7</td></tr>
+    <tr><td>VLANeXt</td><td>82.5</td><td>65.7</td><td>90.4</td><td>81.8</td><td>94.1</td><td>80.8</td><td>95.9</td><td>84.5</td></tr>
+    <tr><td>WorldPilot</td><td>96.4</td><td>60.6</td><td>82.8</td><td>87.2</td><td>93.6</td><td>80.5</td><td class="best">98.6</td><td>85.7</td></tr>
+    <tr><td>InternVLA-A1.5</td><td class="best">98.2</td><td>55.1</td><td>83.1</td><td>86.9</td><td class="best">95.6</td><td class="best">85.2</td><td>96.4</td><td>85.8</td></tr>
+    <tr class="group-start"><td>Vanilla, <i>H</i><sub>exec</sub>=50</td><td>83.0</td><td>49.7</td><td>77.1</td><td>53.9</td><td>80.0</td><td>64.8</td><td>85.7</td><td>70.6</td></tr>
+    <tr><td>Vanilla, <i>H</i><sub>exec</sub>=10</td><td>95.2</td><td>73.4</td><td>91.5</td><td>77.7</td><td>94.3</td><td>82.1</td><td>96.0</td><td>87.2</td></tr>
+    <tr class="ours"><td><b>S-WAM (ours)</b>, <i>H</i><sub>exec</sub>=50</td><td>96.6</td><td class="best">76.0</td><td>89.5</td><td>85.2</td><td>90.4</td><td>79.3</td><td class="best">98.6</td><td class="best">87.9</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>Training efficiency</h3>
+<figure>
+  <img src="static/images/fig_budget.png" alt="Success rate versus training steps across five global batch sizes.">
+  <figcaption><b>Success rate versus training steps across five global batch sizes.</b></figcaption>
+</figure>
+<p>Training under the streaming schedule is more expensive per step, but converges substantially
+faster. Across five global batch sizes, S-WAM consistently reaches higher success with fewer
+training steps, with the largest gains in low-batch regimes. At batch size 4 it reaches 72.5
+success after 10k steps, compared with 32.2 for vanilla even after 25k steps; the gap narrows to
+14.3 points at batch size 64. Although each streaming-training step costs 1.87&times; more FLOPs,
+the shorter schedule more than offsets this overhead &mdash; S-WAM ends at a higher success rate
+than vanilla while spending fewer total training FLOPs.</p>
+
+<h3>Inference speed</h3>
+<p class="tcap"><b>Optimization ladder on the LaWAM host.</b> <i>Eager</i> is standard PyTorch
+execution; <i>CUDA Graph</i> captures the geometry and denoising calls to reduce launch overhead;
+<i>prompt cache</i> reuses the frame-invariant prompt computation. Neither optimization changes the
+actions produced.</p>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>Method</th><th>Action/s &uarr;</th><th>Speedup</th><th>TTFA (ms) &darr;</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Vanilla (<i>H</i><sub>exec</sub>=10), eager</td><td>80.9 &plusmn; 1.0</td><td>1.00&times;</td><td>123.6</td></tr>
+    <tr><td>Vanilla (<i>H</i><sub>exec</sub>=50), eager</td><td>402.5 &plusmn; 6.8</td><td>4.98&times;</td><td>124.2</td></tr>
+    <tr class="ours"><td><b>Ours</b> (<i>H</i><sub>exec</sub>=50), eager</td><td>292.7 &plusmn; 9.4</td><td>3.62&times;</td><td>73.3</td></tr>
+    <tr class="ours"><td class="sub">+ geo &amp; DiT CUDA Graph</td><td>625.7 &plusmn; 16.1</td><td>7.73&times;</td><td>53.2</td></tr>
+    <tr class="ours"><td class="sub">+ prompt cache</td><td class="best">642.9 &plusmn; 18.2</td><td class="best">7.95&times;</td><td class="best">48.6</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Against the vanilla policy at the execution horizon that matches its accuracy
+(<i>H</i><sub>exec</sub>=10), S-WAM raises throughput from 80.9 to 292.7 executed actions per second
+(3.62&times;) and cuts time-to-first-action from 123.6 to 73.3&nbsp;ms (&minus;40.7%). Adding graph
+capture and prompt caching takes the same policy to 642.9 actions per second at 48.6&nbsp;ms.</p>
+
+<h2>Analysis</h2>
+
+<h3>Execution length and the speed&ndash;accuracy trade-off</h3>
+<figure class="fig-xs">
+  <img src="static/images/fig_exec_avg4.png" alt="Success rate versus execution horizon, averaged over four suites.">
+  <figcaption><b>Success rate versus execution horizon</b>, averaged over four LIBERO suites.
+  Vanilla success peaks at or near <i>H</i><sub>exec</sub>=10 on both backbones, so we compare
+  mainly against that configuration.</figcaption>
+</figure>
+<p>Increasing throughput by executing more actions per inference substantially degrades
+conventional policies. With only <i>H</i><sub>exec</sub> varied, our backbone drops from 95.2 at
+<i>H</i><sub>exec</sub>=10 to 82.4 at 50, while &pi;<sub>0.5</sub> drops from 93.2 to 66.4. In
+contrast, S-WAM executes the full 50-action chunk and still reaches 97.7 and 96.5 on the two
+backbones, above the best vanilla result on either. The throughput improvement therefore does not
+come from sacrificing task performance: the main limitation lies in executing later actions under
+stale conditioning, rather than in the chunk length itself.</p>
+
+<h3>Choice of denoising steps and sub-chunk size</h3>
+<figure class="fig-md">
+  <img src="static/images/fig_kgran.png" alt="Effect of chunking hyper-parameters.">
+  <figcaption><b>Effect of the chunking hyper-parameters</b>, where <i>H</i> = <i>K</i> &times;
+  <i>G</i>.</figcaption>
+</figure>
+<p>The total chunk length is determined by the number of denoising steps <i>K</i> and the sub-chunk
+size <i>G</i>, the number of actions emitted per step; increasing either increases the executed
+horizon and thus throughput. Varying each factor independently, performance remains stable over a
+broad range and degrades only when the chunk becomes too long relative to the available denoising
+steps. We therefore use <i>K</i>=5 and <i>G</i>=10, a 50-action chunk, for all experiments unless
+otherwise specified.</p>
+
+<h3>Small models vs. execution-level acceleration</h3>
+<figure>
+  <img src="static/images/fig_small_model_compare.png" alt="Comparison with compact VLA models on LIBERO, LIBERO-Plus and DOMINO.">
+  <figcaption><b>Comparison with compact VLA models</b> on LIBERO, LIBERO-Plus and DOMINO, plus
+  action throughput.</figcaption>
+</figure>
+<p>We compare against three compact policies &mdash; TurboVLA (0.2B), VLA-Adapter (0.6B) and Evo-1
+(0.77B) &mdash; relative to our 2.3B backbone. On LIBERO the compact models already perform
+strongly, but the gap widens on harder benchmarks: they reach 66.9&ndash;76.5% on LIBERO-Plus versus
+87.9% for ours, and 0.9&ndash;5.3% on DOMINO, where S-WAM reaches 19.3%. These are two complementary
+paths to efficient policy inference &mdash; reducing model size, which works well on relatively
+easier settings, and execution-level acceleration, which preserves the capacity of a larger
+policy.</p>
+
+<h3>Future-prediction error as an adaptive-chunking signal</h3>
+<figure class="fig-xs">
+  <img src="static/images/fig_tradeoff_gate.png" alt="Success rate against throughput for fixed and adaptive commitment on LIBERO-Long.">
+  <figcaption><b>Success rate against throughput</b> for fixed and adaptive commitment on
+  LIBERO-Long.</figcaption>
+</figure>
+<p><i>Commit-X</i> always executes exactly <i>X</i> sub-chunks before replanning. <i>pX</i> instead
+sets the gating threshold to the <i>X</i>-th percentile of the future-prediction error measured on
+the validation set and replans when the error exceeds it, while committing to at least four
+sub-chunks. Adaptive chunking provides an additional operating point between commit-4 and commit-5,
+trading a small amount of throughput for a larger gain in success: p80 reaches 96.2 success with
+only a modest further reduction in throughput.</p>
+
+<h3>Transferability across policy backbones</h3>
+<p class="tcap"><b>S-WAM transfers across backbones.</b> Each backbone retains its host-specific
+training configuration, while the schedule, objectives and method-side hyper-parameters remain
+unchanged. Act/s is executed actions per second; TTFA is time to first action (ms). Notably,
+&pi;<sub>0.5</sub> and FLOWER were not pretrained to predict future latents.</p>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>Backbone</th><th>Policy</th><th>Spatial</th><th>Object</th><th>Goal</th><th>Long</th>
+      <th>Avg.</th><th>Act/s &uarr;</th><th>TTFA &darr;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="ours"><td>LaWAM (2.3B)</td><td><b>S-WAM</b></td><td class="best">98.6</td><td class="best">100.0</td><td class="best">97.0</td><td class="best">95.0</td><td class="best">97.65</td><td>292.7</td><td class="best">73.3</td></tr>
+    <tr><td></td><td>Vanilla, <i>H</i><sub>exec</sub>=10</td><td>96.2</td><td>98.4</td><td>95.6</td><td>90.6</td><td>95.20</td><td>80.9</td><td>123.6</td></tr>
+    <tr><td></td><td>Vanilla, <i>H</i><sub>exec</sub>=50</td><td>87.2</td><td>80.6</td><td>88.0</td><td>73.8</td><td>82.40</td><td class="best">402.5</td><td>124.2</td></tr>
+    <tr class="ours group-start"><td>&pi;<sub>0.5</sub> (3.5B)</td><td><b>S-WAM</b></td><td class="best">98.0</td><td>98.6</td><td class="best">95.2</td><td class="best">94.2</td><td class="best">96.50</td><td>243.2</td><td class="best">80.6</td></tr>
+    <tr><td></td><td>Vanilla, <i>H</i><sub>exec</sub>=10</td><td>94.6</td><td class="best">99.0</td><td>91.6</td><td>87.4</td><td>93.15</td><td>75.7</td><td>132.2</td></tr>
+    <tr><td></td><td>Vanilla, <i>H</i><sub>exec</sub>=50</td><td>66.4</td><td>67.6</td><td>72.8</td><td>58.6</td><td>66.35</td><td class="best">378.3</td><td>134.8</td></tr>
+    <tr class="ours group-start"><td>FLOWER (1.0B)</td><td><b>S-WAM</b></td><td>97.4</td><td class="best">99.6</td><td class="best">98.6</td><td>88.8</td><td class="best">96.10</td><td>234.3</td><td class="best">72.7</td></tr>
+    <tr><td></td><td>Vanilla, <i>H</i><sub>exec</sub>=10</td><td class="best">98.8</td><td>99.2</td><td>96.6</td><td class="best">89.6</td><td>96.05</td><td>85.5</td><td>117.0</td></tr>
+    <tr><td></td><td>Vanilla, <i>H</i><sub>exec</sub>=50</td><td>85.6</td><td>85.0</td><td>90.6</td><td>67.0</td><td>82.05</td><td class="best">416.0</td><td>120.2</td></tr>
+  </tbody>
+</table>
+</div>
+<p>Compared with vanilla execution at <i>H</i><sub>exec</sub>=50, S-WAM improves success by 15.25,
+30.15 and 14.05 points on LaWAM, &pi;<sub>0.5</sub> and FLOWER respectively. Across all three
+backbones it achieves comparable or better success than vanilla execution at
+<i>H</i><sub>exec</sub>=10, while improving throughput by 2.74&times;&ndash;3.62&times; and reducing
+TTFA by 37.9%&ndash;40.7%.</p>
+
+<h2>BibTeX</h2>
+<pre>@article{sun2026staircase,
+  title   = {Staircase Policy: Streaming Inference for World-Action Models
+             with Large Action Chunks},
+  author  = {Sun, Guoheng and Chen, Chen and Wang, Jin and Li, Ang
+             and Lv, Teresa},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
 
 <footer>
   <a href="https://s1ghhh.github.io/">Back to homepage</a>
