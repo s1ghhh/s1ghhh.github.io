@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks</title>
+<meta name="description" content="Project page for Staircase Policy (S-WAM), a streaming inference and training framework for World-Action Models.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    background: #fafafa;
+    color: #333;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 30px;
+  }
+  h1 {
+    font-size: 2.2em;
+    color: #1a1a2e;
+    margin-bottom: 18px;
+    line-height: 1.3;
+    text-align: center;
+  }
+  h2 {
+    font-size: 1.5em;
+    color: #1a1a2e;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #4fc3f7;
+  }
+  .authors {
+    text-align: center;
+    font-size: 1.05em;
+    margin-bottom: 8px;
+  }
+  .authors span { white-space: nowrap; margin: 0 6px; }
+  .affil {
+    text-align: center;
+    font-size: 0.95em;
+    color: #666;
+    margin-bottom: 4px;
+  }
+  .affil span { white-space: nowrap; margin: 0 8px; }
+  .note {
+    text-align: center;
+    font-size: 0.85em;
+    color: #888;
+    margin-top: 10px;
+  }
+  .links {
+    text-align: center;
+    margin: 36px 0 10px;
+  }
+  .links a, .links span.disabled {
+    display: inline-block;
+    margin: 6px 6px;
+    padding: 10px 22px;
+    border-radius: 24px;
+    text-decoration: none;
+    font-size: 0.95em;
+  }
+  .links a {
+    background: #1a1a2e;
+    color: #fff;
+  }
+  .links a:hover { background: #333; }
+  .links span.disabled {
+    background: #e0e0e0;
+    color: #999;
+    cursor: default;
+  }
+  .banner {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 40px 0 0;
+    text-align: center;
+    color: #6d4c00;
+  }
+  .abstract {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 24px 28px;
+    text-align: justify;
+  }
+  footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    font-size: 0.85em;
+    color: #888;
+  }
+  footer a { color: #888; }
+  @media (max-width: 600px) {
+    .container { padding: 40px 18px; }
+    h1 { font-size: 1.6em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks</h1>
+
+<div class="authors">
+  <span>Guoheng Sun<sup>1</sup></span>
+  <span>Chen Chen<sup>2</sup></span>
+  <span>Jin Wang<sup>3</sup></span>
+  <span>Ang Li<sup>1</sup></span>
+  <span>Lingjuan Lyu<sup>2</sup></span>
+</div>
+
+<div class="affil">
+  <span><sup>1</sup>University of Maryland, College Park</span>
+  <span><sup>2</sup>Independent Researcher</span>
+</div>
+<div class="affil">
+  <span><sup>3</sup>Oxford Robotics Institute, University of Oxford</span>
+</div>
+
+<div class="links">
+  <span class="disabled">arXiv (coming soon)</span>
+  <span class="disabled">Code (coming soon)</span>
+</div>
+
+<div class="banner">
+  <strong>This page is under construction.</strong><br>
+  The paper, code, and videos will be posted here shortly.
+</div>
+
+<h2>Abstract</h2>
+
+<div class="abstract">
+<p>World-Action Models (WAMs) improve robotic manipulation by conditioning action generation on predicted future observations, but future prediction adds further inference overhead to already expensive iterative action generation. Action chunking can amortize this cost over multiple actions, yet performance degrades over long execution horizons because later actions remain conditioned on stale observations. We introduce <strong>Staircase Policy</strong>, a streaming inference and training framework that turns a flow-matching VLA into a JEPA-style WAM and partitions a large action chunk into sub-chunks at staggered denoising stages. Near-term actions are executed as soon as they become available, while later actions continue to be refined. At each sub-chunk boundary, the future latent is re-predicted from the latest observation and used to update all unexecuted actions, enabling long-horizon execution without repeated full policy inference. The resulting future-prediction error can further serve as a signal for adaptive chunking.</p>
+<p style="margin-top:14px;"><strong>S-WAM</strong> achieves 97.7% on LIBERO and 87.9% on LIBERO-Plus, and improves performance across multiple policy backbones and real-robot tasks. It reaches 292.7 executed actions per second, 3.62&times; the throughput of conventional execution at comparable accuracy, while reducing time-to-first-action from 123.6 to 73.3&nbsp;ms. With additional inference optimizations, throughput further increases to 642.9 actions per second.</p>
+</div>
+
+<footer>
+  <a href="https://s1ghhh.github.io/">Back to homepage</a>
+</footer>
+
+</div>
+</body>
+</html>
