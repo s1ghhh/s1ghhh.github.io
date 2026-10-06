@@ -138,13 +138,10 @@
 
   .demo-body { display: grid; grid-template-columns: 236px 1fr; }
   .demo-side { padding: 18px; border-right: 1px solid var(--line-soft); display: grid; gap: 14px; align-content: start; }
-  .obs { position: relative; border-radius: 10px; overflow: hidden; background: #e8ebef; aspect-ratio: 540 / 456; }
-  .obs img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .25s; }
-  .obs img.on { opacity: 1; }
-  .obs .tag {
-    position: absolute; left: 8px; top: 8px; font-family: var(--mono); font-size: 0.74rem;
-    background: rgba(255,255,255,.92); color: var(--ink); padding: 2px 8px; border-radius: 6px; white-space: nowrap;
-  }
+  .obs { border-radius: 10px; background: var(--bg); border: 1px solid var(--line-soft); }
+  .obs svg { display: block; width: 100%; height: auto; }
+  .obs text { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-2); }
+  .obs .warn { fill: var(--warn); }
   .cond { display: grid; gap: 6px; font-size: 0.82rem; }
   .cond-row { display: flex; justify-content: space-between; gap: 8px; color: var(--ink-2); }
   .cond-row b { font-family: var(--mono); font-weight: 500; color: var(--ink); }
@@ -182,7 +179,7 @@
   .track-lbl { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); margin-top: -6px; }
   .narr {
     font-size: 0.9rem; color: var(--ink); background: var(--bg); border-radius: 8px;
-    padding: 9px 12px; min-height: 2.6em; display: flex; align-items: center;
+    padding: 9px 12px; min-height: 2.6em;
   }
   .tally { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
   .tally div { border-top: 1px solid var(--line); padding-top: 6px; font-size: 0.74rem; color: var(--muted); line-height: 1.35; }
@@ -191,7 +188,7 @@
 
   @media (max-width: 820px) {
     .demo-body { grid-template-columns: 1fr; }
-    .demo-side { border-right: 0; border-bottom: 1px solid var(--line-soft); grid-template-columns: 150px 1fr; align-items: start; }
+    .demo-side { border-right: 0; border-bottom: 1px solid var(--line-soft); grid-template-columns: 220px 1fr; align-items: start; }
     .modules { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); }
     .mod { flex-direction: column; align-items: flex-start; gap: 0; }
     .ctrls { margin-left: 0; }
@@ -203,7 +200,8 @@
     .sc-h span { display: none; }
     .bars { height: 64px; gap: 1px; }
     .tally { grid-template-columns: repeat(2, 1fr); }
-    .demo-side { grid-template-columns: 120px 1fr; }
+    .demo-side { grid-template-columns: 1fr; }
+    .obs { max-width: 340px; }
   }
 
   /* ---- headline numbers ---- */
@@ -419,16 +417,28 @@
     <div class="demo-body">
       <div class="demo-side">
         <div class="obs" id="obs">
-          <img src="static/images/tasks/sbd_f0.jpg" alt="" class="on">
-          <img src="static/images/tasks/sbd_f1.jpg" alt="">
-          <img src="static/images/tasks/sbd_f2.jpg" alt="">
-          <img src="static/images/tasks/sbd_f3.jpg" alt="">
-          <img src="static/images/tasks/sbd_f4.jpg" alt="">
-          <span class="tag" id="obs-tag">camera: o<sub>0</sub></span>
+          <svg viewBox="0 0 200 150" role="img" aria-labelledby="tt-title">
+            <title id="tt-title">Turntable seen from the camera. The solid bowl is where the target is now; the dashed outline is where it was in the frame the remaining actions are conditioned on.</title>
+            <text x="10" y="17">turntable &middot; 22.5&deg;/s</text>
+            <text x="190" y="17" text-anchor="end" id="tt-lag">lag 0.0&deg;</text>
+            <ellipse cx="100" cy="94" rx="84" ry="38" fill="#0E121B"/>
+            <rect x="16" y="84" width="168" height="10" fill="#0E121B"/>
+            <ellipse cx="100" cy="84" rx="84" ry="38" fill="#232A39"/>
+            <g id="tt-ticks" stroke="#4A5468" stroke-width="1.2" stroke-linecap="round"></g>
+            <path id="tt-arc" fill="none" stroke="var(--warn)" stroke-width="2.5" stroke-linecap="round"/>
+            <ellipse id="tt-ghost" rx="15" ry="7.5" fill="none" stroke="#F3F5F8" stroke-width="1.4" stroke-dasharray="3 2.4"/>
+            <g id="tt-bowl">
+              <ellipse cx="0" cy="2.5" rx="15" ry="7.5" fill="#1E6FB0"/>
+              <ellipse cx="0" cy="0" rx="15" ry="7.5" fill="#3A9BE0"/>
+              <ellipse cx="0" cy="0.6" rx="10.5" ry="4.8" fill="#2678BC"/>
+            </g>
+            <text x="10" y="143" id="tt-cap">dashed = bowl in o<tspan dy="2" font-size="7.5">0</tspan></text>
+          </svg>
         </div>
         <div class="cond">
           <div class="cond-row" id="cond-row"><span>Actions conditioned on</span><b id="cond-lbl">o<sub>0</sub></b></div>
           <div class="cond-row" id="age-row"><span>Actions since that frame</span><b id="age-lbl">0</b></div>
+          <div class="cond-row" id="turn-row"><span>Turntable turned since</span><b id="turn-lbl">0.0&deg;</b></div>
           <div class="age" id="age"><i></i></div>
         </div>
         <div class="modules">
@@ -438,7 +448,7 @@
         </div>
       </div>
       <div class="demo-main">
-        <div class="tau-note"><span>Five sub-chunks of ten actions. Dots count the denoising steps each sub-chunk has received.</span><span class="mono" id="tau">&tau; = 0.0</span></div>
+        <div class="tau-note"><span>Five sub-chunks of ten actions. Dots count the expert passes each sub-chunk has received before it is read out.</span><span class="mono" id="tau">expert at &tau; = &ndash;</span></div>
         <div class="chunk" id="chunk"></div>
         <div class="track" id="track" aria-hidden="true"></div>
         <div class="track-lbl"><span>action 1</span><span id="exec-lbl">executed 0 / 50</span><span>action 50</span></div>
@@ -451,7 +461,7 @@
         </div>
       </div>
     </div>
-    <div class="demo-foot">Schematic of Algorithm 1 with <i>K</i>=5, <i>G</i>=10. Both schemes spend one backbone pass and five expert passes per 50 actions, so they are compute-matched. Bar heights are illustrative.</div>
+    <div class="demo-foot">Schematic of Algorithm 1 with <i>K</i>=5, <i>G</i>=10 and a fixed commitment of all five sub-chunks (the error-gated early replan is not shown). Both schemes spend one backbone pass and five expert passes per 50 actions, the paper's compute-matched setting; S-WAM additionally re-runs the millisecond-scale future predictor at each boundary. The turntable is drawn to scale: at the 50&nbsp;Hz recording rate, 50 actions span 1&nbsp;s, in which the dynamic-task turntable turns 22.5&deg;. Bar heights are illustrative.</div>
   </div>
 
   <div class="figures">
@@ -901,18 +911,32 @@
   }
   trackEl.innerHTML = "<i></i>".repeat(H);
   var ticks = trackEl.querySelectorAll("i");
-  var obsImgs = $("obs").querySelectorAll("img");
+  // Turntable geometry: the disc is an ellipse (camera looks down at an angle).
+  var TT = { cx: 100, cy: 84, rx: 84, ry: 38, r: 0.66, deg0: 62, degPerAction: 22.5 / 50 };
+  function ttPoint(deg, r) {
+    var a = deg * Math.PI / 180;
+    return [TT.cx + TT.rx * r * Math.cos(a), TT.cy + TT.ry * r * Math.sin(a)];
+  }
+  (function () {
+    var g = $("tt-ticks"), html = "";
+    // One rim tick per 22.5 deg, i.e. per 50 actions (one chunk) of rotation.
+    for (var k = 0; k < 16; k++) {
+      var p = ttPoint(k * 22.5, 0.86), q = ttPoint(k * 22.5, 0.96);
+      html += '<line data-k="' + k + '" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>';
+    }
+    g.innerHTML = html;
+  })();
+  var ttTicks = $("tt-ticks").querySelectorAll("line");
 
   function fresh() {
     return { steps: [0, 0, 0, 0, 0], emitted: [false, false, false, false, false], emitTau: [0, 0, 0, 0, 0],
-      exec: 0, obs: 0, cond: 0, active: null, vlm: 0, f: 0, dit: 0, first: null, maxAge: 0, narr: "" };
+      exec: 0, cond: 0, tauEval: null, active: null, vlm: 0, f: 0, dit: 0, first: null, maxAge: 0, narr: "" };
   }
   function execEvents(evs, from, to, narrFn) {
     for (var n = from; n < to; n++) (function (n) {
       evs.push({ dur: 85, fn: function (s) {
         s.active = null; s.exec = n + 1;
         if (s.first === null) s.first = s.dit;
-        s.obs = Math.min(K - 1, Math.floor(n / G));
         s.maxAge = Math.max(s.maxAge, s.exec - s.cond * G);
         s.narr = narrFn(n);
       } });
@@ -923,45 +947,47 @@
     evs.push({ dur: 1100, fn: function (s) { s.active = "vlm"; s.vlm++; s.narr = "The backbone reads o₀ and the instruction once for the whole chunk."; } });
     for (var j = 0; j < K; j++) (function (j) {
       evs.push({ dur: 650, fn: function (s) {
-        s.active = "f"; s.f++; s.obs = j; s.cond = j;
-        s.narr = "Boundary " + j + ": new frame o" + SUB[j] + ". Only the small future predictor re-runs; the backbone context is reused.";
+        s.active = "f"; s.f++; s.cond = j;
+        s.narr = j === 0
+          ? "The future predictor encodes o\u2080 and predicts the future latent."
+          : "Boundary " + j + ": new frame o" + SUB[j] + ". Only the future predictor re-runs on it; the backbone context from o\u2080 is reused.";
       } });
       evs.push({ dur: 750, fn: function (s) {
-        s.active = "dit"; s.dit++;
+        s.active = "dit"; s.dit++; s.tauEval = j / K;
         for (var c = j; c < K; c++) s.steps[c]++;
-        s.narr = "Expert pass " + (j + 1) + " of 5: every action not yet executed takes one more denoising step under the new condition.";
+        s.narr = "Expert pass " + (j + 1) + " of 5 at \u03c4 = " + (j / K).toFixed(1) + ", conditioned on o" + SUB[j] + ". It updates every action not yet executed.";
       } });
       evs.push({ dur: 650, fn: function (s) {
-        s.active = null; s.emitted[j] = true; s.emitTau[j] = (j + 1) / K;
-        s.narr = "Actions " + (j * G + 1) + "–" + (j * G + G) + " are read out after " + (j + 1) + (j ? " passes" : " pass") + " and handed to the robot.";
+        s.active = null; s.emitted[j] = true; s.emitTau[j] = j / K;
+        s.narr = "Actions " + (j * G + 1) + "\u2013" + (j * G + G) + " are read out by extrapolating this velocity to \u03c4 = 1, after " + (j + 1) + (j ? " passes" : " pass") + ", and handed to the robot.";
       } });
       execEvents(evs, j * G, j * G + G, function (n) {
-        return "Executing action " + (n + 1) + ". " + (j < K - 1 ? "Later sub-chunks wait for the next frame." : "Last sub-chunk of the chunk.");
+        return "Executing action " + (n + 1) + ". " + (j < K - 1 ? "Once these ten are done, the robot observes o" + SUB[j + 1] + "." : "Last sub-chunk; the next chunk starts with a new backbone pass.");
       });
     })(j);
-    evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "50 actions from 1 backbone pass and 5 expert passes. No action ran more than 10 steps past its conditioning frame."; } });
+    evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "50 actions from 1 backbone pass, 5 expert passes and 5 predictor refreshes. No action ran more than 10 actions past its conditioning frame."; } });
     return evs;
   }
   function buildVan() {
     var evs = [];
     evs.push({ dur: 1100, fn: function (s) { s.active = "vlm"; s.vlm++; s.narr = "The backbone reads o₀ and the instruction once for the whole chunk."; } });
-    evs.push({ dur: 650, fn: function (s) { s.active = "f"; s.f++; s.narr = "The future latent is predicted once, from o₀."; } });
+    evs.push({ dur: 650, fn: function (s) { s.active = "f"; s.f++; s.narr = "The future predictor encodes o\u2080 and predicts the future latent, once for the whole chunk."; } });
     for (var k = 0; k < K; k++) (function (k) {
       evs.push({ dur: 650, fn: function (s) {
-        s.active = "dit"; s.dit++;
+        s.active = "dit"; s.dit++; s.tauEval = k / K;
         for (var c = 0; c < K; c++) s.steps[c]++;
-        s.narr = "Expert pass " + (k + 1) + " of 5 over the whole chunk. Nothing can run until all five finish.";
+        s.narr = "Expert pass " + (k + 1) + " of 5 at \u03c4 = " + (k / K).toFixed(1) + ", conditioned on o\u2080. Nothing can run until all five finish.";
       } });
     })(k);
     evs.push({ dur: 650, fn: function (s) {
       s.active = null;
       for (var c = 0; c < K; c++) { s.emitted[c] = true; s.emitTau[c] = 1; }
-      s.narr = "The whole chunk is ready after 5 passes.";
+      s.narr = "After five Euler steps the buffer reaches \u03c4 = 1 and all 50 actions are ready.";
     } });
     execEvents(evs, 0, H, function (n) {
-      return n < G ? "Executing action " + (n + 1) + "." : "Executing action " + (n + 1) + ", still planned from o₀ while the turntable has moved on.";
+      return n < G ? "Executing action " + (n + 1) + "." : "Executing action " + (n + 1) + ", still planned from o\u2080 while the turntable keeps turning.";
     });
-    evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "Same compute: 1 backbone pass and 5 expert passes. But actions 11–50 never saw a newer frame."; } });
+    evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "The same 1 backbone pass and 5 expert passes, but actions 11\u201350 were all planned from o\u2080."; } });
     return evs;
   }
 
@@ -982,8 +1008,8 @@
         col.bars[b].classList.toggle("x", b < execInCol);
       }
       var label;
-      if (execInCol === G) label = "executed";
-      else if (execInCol > 0) label = "executing";
+      if (execInCol === G) label = "done";
+      else if (execInCol > 0) label = "running";
       else if (s.emitted[c]) label = "read out";
       else if (steps === 0) label = "noise";
       else label = steps + (steps > 1 ? " steps" : " step");
@@ -993,16 +1019,35 @@
     }
     for (var t = 0; t < H; t++) ticks[t].style.background = t < s.exec ? HUES[Math.floor(t / G)] : "";
     $("exec-lbl").textContent = "executed " + s.exec + " / 50";
-    var maxSteps = Math.max.apply(null, s.steps);
-    $("tau").textContent = "τ = " + (maxSteps / K).toFixed(1);
-    for (var o = 0; o < obsImgs.length; o++) obsImgs[o].classList.toggle("on", o === s.obs);
-    $("obs-tag").innerHTML = "camera: o<sub>" + s.obs + "</sub>";
+    $("tau").textContent = "expert at \u03c4 = " + (s.tauEval === null ? "\u2013" : s.tauEval.toFixed(1));
     $("cond-lbl").innerHTML = "o<sub>" + s.cond + "</sub>";
     var age = Math.max(0, s.exec - s.cond * G);
     $("age-lbl").textContent = age;
+    var lag = age * TT.degPerAction;
+    $("turn-lbl").textContent = lag.toFixed(1) + "\u00b0";
+    // Turntable: rotation follows executed actions; the ghost sits where the bowl was in o_cond.
+    var rot = s.exec * TT.degPerAction;
+    for (var q = 0; q < ttTicks.length; q++) {
+      var a = q * 22.5 + rot, p1 = ttPoint(a, 0.86), p2 = ttPoint(a, 0.96);
+      ttTicks[q].setAttribute("x1", p1[0].toFixed(1)); ttTicks[q].setAttribute("y1", p1[1].toFixed(1));
+      ttTicks[q].setAttribute("x2", p2[0].toFixed(1)); ttTicks[q].setAttribute("y2", p2[1].toFixed(1));
+    }
+    var now = ttPoint(TT.deg0 + rot, TT.r), was = ttPoint(TT.deg0 + s.cond * G * TT.degPerAction, TT.r);
+    $("tt-bowl").setAttribute("transform", "translate(" + now[0].toFixed(1) + " " + now[1].toFixed(1) + ")");
+    $("tt-ghost").setAttribute("cx", was[0].toFixed(1)); $("tt-ghost").setAttribute("cy", was[1].toFixed(1));
+    var arc = "";
+    for (var d = 0; d <= 12; d++) {
+      var pt = ttPoint(TT.deg0 + s.cond * G * TT.degPerAction + lag * d / 12, TT.r + 0.2);
+      arc += (d ? "L" : "M") + pt[0].toFixed(1) + " " + pt[1].toFixed(1);
+    }
+    $("tt-arc").setAttribute("d", lag > 0 ? arc : "");
+    $("tt-lag").textContent = "lag " + lag.toFixed(1) + "\u00b0";
+    $("tt-lag").setAttribute("class", age > G ? "warn" : "");
+    $("tt-cap").innerHTML = "dashed = bowl in o<tspan dy=\"2\" font-size=\"7.5\">" + s.cond + "</tspan>";
     var stale = age > G;
     $("age").classList.toggle("stale", stale);
     $("age-row").classList.toggle("stale", stale);
+    $("turn-row").classList.toggle("stale", stale);
     $("age").firstElementChild.style.width = (age / H * 100) + "%";
     ["vlm", "f", "dit"].forEach(function (m) {
       $("m-" + m).classList.toggle("on", s.active === m);
