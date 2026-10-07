@@ -24,6 +24,7 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 
 ## What's New
 
+- [2026.09] Our work [*ROCKET: Residual-Oriented Multi-Layer Alignment for Spatially-Aware Vision-Language-Action Models*](https://arxiv.org/pdf/2602.17951) was accepted at **NeurIPS 2026**.
 - [2026.08] Our work [*CoIn: Counting the Invisible Reasoning Tokens in Commercial Opaque LLM APIs*](https://arxiv.org/pdf/2505.13778) was accepted at **Findings of EMNLP 2026**.
 - [2026.05] Our works [*Demystifying When Pruning Works via Representation Hierarchies*](https://arxiv.org/pdf/2603.24652) and [*Invisible Tokens, Visible Bills*](https://arxiv.org/pdf/2505.18471) were accepted at **ICML 2026** (the latter in the **Position Paper Track**).
 - [2026.04] Our work [*VeriReason: Reinforcement Learning with Testbench Feedback for Reasoning-Enhanced Verilog Generation*](https://arxiv.org/pdf/2505.11849) was accepted at **ACM GLSVLSI 2026**.
@@ -45,9 +46,13 @@ I'm always open to collaborations! Feel free to reach out to me at [ghsun@umd.ed
 
 <small>\* denotes equal contribution &nbsp;&nbsp; † denotes equal supervision</small>
 
+### <span style="color:#52ADC8">Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks</span>
+**G. Sun**, C. Chen, J. Wang, A. Li, T. Lv <br>
+*arXiv preprint 2026* [[Link](https://arxiv.org/abs/2609.36471)] [[Project Page](https://s1ghhh.github.io/staircase-policy/)]
+
 ### <span style="color:#52ADC8">ROCKET: Residual-Oriented Multi-Layer Alignment for Spatially-Aware Vision-Language-Action Models</span>
 **G. Sun**, T. Du, K. Feng, C. Luo, X. Ding, Z. Shen, Z. Wang, Y. He, A. Li <br>
-*arXiv preprint 2026* [[Link](https://arxiv.org/abs/2602.17951)]
+*NeurIPS 2026* [[Link](https://arxiv.org/abs/2602.17951)]
 
 ### <span style="color:#52ADC8">Drop-Then-Recovery: How Redundant Are Vision-Language-Action Models?</span>
 **G. Sun**, K. Feng, S. He, X. Gong, Y. He, Z. Wang, Z. Shen, W. Ye, R. R. Kompella, G. Liu, A. Li <br>
