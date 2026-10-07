@@ -123,7 +123,7 @@
     padding: 14px 18px; border-bottom: 1px solid var(--line-soft);
   }
   .demo-title { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-  .seg { display: inline-flex; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+  .seg { display: inline-flex; flex-wrap: wrap; background: var(--bg); border: 1px solid var(--line); border-radius: 18px; padding: 3px; }
   .seg button {
     font: 500 0.85rem var(--sans); border: 0; background: transparent; color: var(--ink-2);
     padding: 5px 14px; border-radius: 999px; cursor: pointer; white-space: nowrap;
@@ -138,10 +138,24 @@
 
   .demo-body { display: grid; grid-template-columns: 236px 1fr; }
   .demo-side { padding: 18px; border-right: 1px solid var(--line-soft); display: grid; gap: 14px; align-content: start; }
-  .obs { border-radius: 10px; background: var(--bg); border: 1px solid var(--line-soft); }
-  .obs svg { display: block; width: 100%; height: auto; }
-  .obs text { font-family: var(--mono); font-size: 9.5px; fill: var(--ink-2); }
-  .obs .warn { fill: var(--warn); }
+  .obs { position: relative; border-radius: 10px; overflow: hidden; background: #DADDE2; aspect-ratio: 360 / 304; }
+  .obs > img { width: 100%; height: 100%; object-fit: cover; }
+  .obs .tag {
+    position: absolute; left: 8px; top: 8px; font-family: var(--mono); font-size: 0.72rem; white-space: nowrap;
+    background: rgba(18,24,38,.72); color: #fff; padding: 2px 7px; border-radius: 5px;
+  }
+  .inset {
+    position: absolute; right: 6px; bottom: 6px; width: 38%; margin: 0;
+    border: 2px solid #fff; border-radius: 6px; overflow: hidden; background: #fff;
+    box-shadow: 0 4px 14px -6px rgba(0,0,0,.5); transition: border-color .2s;
+  }
+  .inset img { width: 100%; aspect-ratio: 360 / 304; object-fit: cover; }
+  .inset figcaption {
+    margin: 0; max-width: none; padding: 1px 5px 2px; font: 500 0.66rem/1.35 var(--mono);
+    color: var(--ink); background: #fff; white-space: nowrap;
+  }
+  .inset.stale { border-color: var(--warn); }
+  .inset.stale figcaption { background: var(--warn); color: #fff; }
   .cond { display: grid; gap: 6px; font-size: 0.82rem; }
   .cond-row { display: flex; justify-content: space-between; gap: 8px; color: var(--ink-2); }
   .cond-row b { font-family: var(--mono); font-weight: 500; color: var(--ink); }
@@ -164,14 +178,19 @@
   .chunk { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
   .sc { border: 1px solid var(--line-soft); border-radius: 10px; padding: 8px 8px 10px; display: grid; gap: 7px; transition: border-color .25s, background .25s; min-width: 0; }
   .sc.emit { border-color: var(--ink); background: #FAFBFD; }
-  .sc.done { opacity: .55; }
+  .sc.done { opacity: .85; }
   .sc-h { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; font-size: 0.74rem; color: var(--muted); white-space: nowrap; }
   .sc-h b { font-family: var(--mono); font-weight: 500; color: var(--ink); font-size: 0.78rem; }
   .dots { display: flex; gap: 3px; }
   .dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); transition: background .25s; }
   .bars { height: 86px; display: flex; align-items: flex-end; gap: 2px; border-bottom: 1px solid var(--line); }
-  .bars i { flex: 1; min-width: 0; border-radius: 2px 2px 0 0; transition: height .45s cubic-bezier(.3,.7,.3,1), opacity .3s; }
-  .bars i.x { opacity: .3; }
+  .bars span { flex: 1; min-width: 0; height: 100%; position: relative; }
+  .bars i, .bars em { position: absolute; left: 0; right: 0; bottom: 0; border-radius: 2px 2px 0 0; }
+  .bars i { transition: height .45s cubic-bezier(.3,.7,.3,1), opacity .3s; }
+  .bars i.x { opacity: .5; }
+  .bars em { border: 1px dashed var(--ink); border-bottom: 0; opacity: .55; z-index: 1; pointer-events: none; }
+  .sc.wait { border-style: dashed; }
+  .ghost-key { display: inline-block; width: 9px; height: 11px; border: 1px dashed var(--ink-2); border-bottom: 0; opacity: .7; vertical-align: -1px; margin-right: 4px; }
   .state { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sc.emit .state { color: var(--ink); }
   .track { display: grid; grid-template-columns: repeat(50, 1fr); gap: 2px; }
@@ -327,8 +346,35 @@
   }
   .tip.on { opacity: 1; }
 
-  /* ---- video ---- */
-  .video video { display: block; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #000; max-width: 100%; }
+  /* ---- videos ---- */
+  .vtabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
+  .vtab {
+    text-align: left; font: inherit; cursor: pointer; background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; display: grid; gap: 2px;
+  }
+  .vtab:hover { border-color: var(--ink-2); }
+  .vtab b { font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; }
+  .vtab span { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
+  .vtab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .vtab[aria-selected="true"] span { color: #C9D0DC; }
+  .bigvid { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #fff; border: 1px solid var(--line); }
+  .vdesc { font-size: 0.9rem; color: var(--ink-2); margin-top: 10px; max-width: 78ch; }
+  @media (max-width: 620px) { .vtabs { grid-template-columns: 1fr; } }
+
+  .clips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .clip { margin: 0; min-width: 0; }
+  .clip-h { display: flex; align-items: center; gap: 7px; font-size: 0.84rem; color: var(--ink); margin-bottom: 6px; white-space: nowrap; }
+  .clip-h i { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .clip-h .res { margin-left: auto; font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
+  .clip-h .res.ok { color: #2E7D4F; }
+  .clip-h .res.fail { color: #B03A2E; }
+  .clip video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: #E4E7EB; }
+  .clip-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 10px 0 4px; font-size: 0.86rem; color: var(--ink-2); }
+  .clip-foot .ctrl { margin-left: auto; }
+  .speed-tag { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
+  .demo-strip { margin-top: 18px; }
+  .demo-strip .rb-h { margin-bottom: 6px; }
+  @media (max-width: 720px) { .clips { grid-template-columns: 1fr; } .clip-foot .ctrl { margin-left: 0; } }
 
   /* ---- bibtex ---- */
   .bib { position: relative; }
@@ -357,6 +403,7 @@
       Staircase Policy
     </a>
     <nav class="topnav" aria-label="Sections">
+      <a href="#videos">Videos</a>
       <a href="#abstract">Abstract</a>
       <a href="#method">Method</a>
       <a href="#real">Real robot</a>
@@ -371,7 +418,7 @@
 <div class="wrap">
 
 <section class="hero">
-  <div class="eyebrow"><b>S-WAM</b> &middot; streaming World-Action Model</div>
+  <div class="eyebrow"><b>S-WAM</b> &middot; Staircase World-Action Model</div>
   <h1>Staircase Policy</h1>
   <p class="subtitle">Streaming Inference for World-Action Models with Large Action Chunks</p>
 
@@ -392,8 +439,7 @@
   </div>
 
   <div class="links">
-    <span class="btn off">arXiv (coming soon)</span>
-    <span class="btn off">Code (coming soon)</span>
+    <a class="btn" href="https://arxiv.org/pdf/2609.36471">arXiv</a>
   </div>
 
   <!-- ==========================================================
@@ -403,10 +449,11 @@
        ========================================================== -->
   <div class="demo" id="demo" aria-label="Animated walkthrough of one action chunk">
     <div class="demo-head">
-      <span class="demo-title">One 50-action chunk</span>
+      <span class="demo-title">50 executed actions</span>
       <div class="seg" role="group" aria-label="Execution scheme">
         <button type="button" id="mode-stair" aria-pressed="true">Staircase Policy</button>
-        <button type="button" id="mode-van" aria-pressed="false">Vanilla, H<sub>exec</sub>=50</button>
+        <button type="button" id="mode-van10" aria-pressed="false">Vanilla, H<sub>exec</sub>=10</button>
+        <button type="button" id="mode-van50" aria-pressed="false">Vanilla, H<sub>exec</sub>=50</button>
       </div>
       <div class="ctrls">
         <button type="button" class="ctrl" id="d-play">Pause</button>
@@ -417,28 +464,16 @@
     <div class="demo-body">
       <div class="demo-side">
         <div class="obs" id="obs">
-          <svg viewBox="0 0 200 150" role="img" aria-labelledby="tt-title">
-            <title id="tt-title">Turntable seen from the camera. The solid bowl is where the target is now; the dashed outline is where it was in the frame the remaining actions are conditioned on.</title>
-            <text x="10" y="17">turntable &middot; 22.5&deg;/s</text>
-            <text x="190" y="17" text-anchor="end" id="tt-lag">lag 0.0&deg;</text>
-            <ellipse cx="100" cy="94" rx="84" ry="38" fill="#0E121B"/>
-            <rect x="16" y="84" width="168" height="10" fill="#0E121B"/>
-            <ellipse cx="100" cy="84" rx="84" ry="38" fill="#232A39"/>
-            <g id="tt-ticks" stroke="#4A5468" stroke-width="1.2" stroke-linecap="round"></g>
-            <path id="tt-arc" fill="none" stroke="var(--warn)" stroke-width="2.5" stroke-linecap="round"/>
-            <ellipse id="tt-ghost" rx="15" ry="7.5" fill="none" stroke="#F3F5F8" stroke-width="1.4" stroke-dasharray="3 2.4"/>
-            <g id="tt-bowl">
-              <ellipse cx="0" cy="2.5" rx="15" ry="7.5" fill="#1E6FB0"/>
-              <ellipse cx="0" cy="0" rx="15" ry="7.5" fill="#3A9BE0"/>
-              <ellipse cx="0" cy="0.6" rx="10.5" ry="4.8" fill="#2678BC"/>
-            </g>
-            <text x="10" y="143" id="tt-cap">dashed = bowl in o<tspan dy="2" font-size="7.5">0</tspan></text>
-          </svg>
+          <img id="cam" src="static/images/frames/o0.jpg" alt="Camera view of the stack-bowl (dynamic) task: the arm picks the red bowl and stacks it on the blue bowl on the turntable.">
+          <span class="tag">camera now &middot; <span id="cam-t">o<sub>0</sub></span></span>
+          <figure class="inset" id="inset">
+            <img id="cond-img" src="static/images/frames/o1.jpg" alt="">
+            <figcaption id="cond-cap">plan: o<sub>1</sub></figcaption>
+          </figure>
         </div>
         <div class="cond">
           <div class="cond-row" id="cond-row"><span>Actions conditioned on</span><b id="cond-lbl">o<sub>0</sub></b></div>
           <div class="cond-row" id="age-row"><span>Actions since that frame</span><b id="age-lbl">0</b></div>
-          <div class="cond-row" id="turn-row"><span>Turntable turned since</span><b id="turn-lbl">0.0&deg;</b></div>
           <div class="age" id="age"><i></i></div>
         </div>
         <div class="modules">
@@ -448,7 +483,7 @@
         </div>
       </div>
       <div class="demo-main">
-        <div class="tau-note"><span>Five sub-chunks of ten actions. Dots count the expert passes each sub-chunk has received before it is read out.</span><span class="mono" id="tau">expert at &tau; = &ndash;</span></div>
+        <div class="tau-note"><span>Five sub-chunks of ten actions. Dots count expert passes; <span class="ghost-key"></span>dashed outlines are the optimal actions.</span><span class="mono" id="tau">expert at &tau; = &ndash;</span></div>
         <div class="chunk" id="chunk"></div>
         <div class="track" id="track" aria-hidden="true"></div>
         <div class="track-lbl"><span>action 1</span><span id="exec-lbl">executed 0 / 50</span><span>action 50</span></div>
@@ -461,7 +496,7 @@
         </div>
       </div>
     </div>
-    <div class="demo-foot">Schematic of Algorithm 1 with <i>K</i>=5, <i>G</i>=10 and a fixed commitment of all five sub-chunks (the error-gated early replan is not shown). Both schemes spend one backbone pass and five expert passes per 50 actions, the paper's compute-matched setting; S-WAM additionally re-runs the millisecond-scale future predictor at each boundary. The turntable is drawn to scale: at the 50&nbsp;Hz recording rate, 50 actions span 1&nbsp;s, in which the dynamic-task turntable turns 22.5&deg;. Bar heights are illustrative.</div>
+    <div class="demo-foot">Schematic of Algorithm 1 with <i>K</i>=5, <i>G</i>=10 and a fixed commitment of all five sub-chunks (the error-gated early replan is not shown). Per 50 executed actions, S-WAM and vanilla at <i>H</i><sub>exec</sub>=50 both spend one backbone pass and five expert passes, the paper's compute-matched setting, and S-WAM also re-runs the millisecond-scale future predictor at each boundary. Vanilla at <i>H</i><sub>exec</sub>=10 executes 10 actions per query before replanning: five backbone passes and 25 expert passes per 50 actions. Bar heights are illustrative.</div>
   </div>
 
   <div class="figures">
@@ -473,29 +508,20 @@
 </section>
 
 <!-- ============================================================
-     VIDEO SLOT  —  currently holding a generated placeholder clip.
-
-     To use the real video: overwrite static/videos/overview.mp4 and
-     static/videos/overview_poster.jpg. Nothing below needs to change.
-     Keep the mp4 H.264 / yuv420p with +faststart so it streams rather
-     than fully downloading before playback.
-
-     To use YouTube instead, replace the whole <video> element with:
-     <iframe src="https://www.youtube.com/embed/VIDEO_ID"
-             title="Staircase Policy overview video"
-             style="width:100%;aspect-ratio:16/9;border:0;border-radius:12px"
-             allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture"
-             allowfullscreen></iframe>
+     VIDEOS. Built from 1006_vedio_demo/demo_v2/part{1,2,3}*.mp4 by
+     1006_vedio_demo/web_clips/make_web_assets.py big (re-encoded,
+     CRF 27, +faststart). Tabs and descriptions live in VIDS below.
      ============================================================ -->
-<section class="block" id="video">
+<section class="block" id="videos">
   <div class="sec">
-    <div class="sec-label">Video</div>
-    <div class="video">
-      <video controls muted loop playsinline preload="metadata" poster="static/videos/overview_poster.jpg">
-        <source src="static/videos/overview.mp4" type="video/mp4">
+    <div class="sec-label">Videos</div>
+    <div>
+      <div class="vtabs" role="tablist" aria-label="Real-robot videos" id="vtabs"></div>
+      <video class="bigvid" id="bigvid" controls muted playsinline preload="metadata" poster="static/videos/compare_poster.jpg">
+        <source src="static/videos/compare.mp4" type="video/mp4">
         Your browser does not support the video tag.
-        <a href="static/videos/overview.mp4">Download the video</a> instead.
       </video>
+      <p class="vdesc" id="vdesc"></p>
     </div>
   </div>
 </section>
@@ -564,7 +590,7 @@
         <div class="idea">
           <h3>Visual conditioning should be refreshed</h3>
           <p>Object poses, contacts and robot configuration change during execution, while the instruction
-          and high-level semantics stay fixed. At each sub-chunk boundary only the lightweight future
+          and high-level semantics remain largely unchanged within a chunk. At each sub-chunk boundary only the lightweight future
           predictor is re-run on the new observation; the vision-language context is reused. The backbone
           runs <b>once per chunk</b> and the predictor once per boundary at millisecond-scale cost. The
           refreshed condition updates every unexecuted action without a full replan.</p>
@@ -605,12 +631,22 @@
         is evaluated over 40 trials. Six tasks are static and dynamic versions of three skills. In the
         dynamic versions the objects ride a turntable that turns continuously at 22.5&deg;/s, so the
         target keeps moving while the robot acts. The other three tasks cover sustained, precise and
-        multi-stage manipulation. Pick a task to see its demonstration and per-task success.</p>
+        multi-stage manipulation. Pick a task to watch S-WAM and both vanilla baselines side by side,
+        next to the task's success rates over all 40 trials.</p>
       </div>
 
       <div class="panel" id="robot">
         <div class="tasks" id="task-chips" role="group" aria-label="Real-robot task"></div>
-        <div class="strip"><img id="task-img" src="static/images/tasks/stack_bowl_dynamic.jpg" alt="Five frames of the selected demonstration."></div>
+        <div class="clips" id="clips">
+          <figure class="clip"><div class="clip-h"><i style="background: var(--accent)"></i><span>S-WAM</span><span class="res" id="res-ours"></span></div><video id="v-ours" muted loop playsinline preload="auto"></video></figure>
+          <figure class="clip"><div class="clip-h"><i style="background: var(--base-1)"></i><span>Vanilla, H<sub>exec</sub>=20</span><span class="res" id="res-e20"></span></div><video id="v-e20" muted loop playsinline preload="auto"></video></figure>
+          <figure class="clip"><div class="clip-h"><i style="background: var(--base-2)"></i><span>Vanilla, H<sub>exec</sub>=50</span><span class="res" id="res-e50"></span></div><video id="v-e50" muted loop playsinline preload="auto"></video></figure>
+        </div>
+        <div class="clip-foot">
+          <span id="clip-cap"></span>
+          <span class="speed-tag" id="clip-speed"></span>
+          <button type="button" class="ctrl" id="clip-play">Pause</button>
+        </div>
         <div class="task-meta" id="task-meta"></div>
         <div class="robot-grid">
           <div>
@@ -632,10 +668,15 @@
             </div>
           </div>
         </div>
+        <div class="demo-strip">
+          <div class="rb-h">One teleoperated training demonstration</div>
+          <div class="strip"><img id="task-img" src="static/images/tasks/stack_bowl_dynamic.jpg" alt="Five frames of the selected demonstration."></div>
+        </div>
       </div>
 
       <div class="prose">
-        <p>On static tasks, vanilla execution loses ground when it commits to 50 actions (57.1 against
+        <p>The clips are single trials picked to show each task, played sped up with the real elapsed time
+        on the timer. The success rates come from all 40 trials. On static tasks, vanilla execution loses ground when it commits to 50 actions (57.1 against
         67.5 at <i>H</i><sub>exec</sub>=20). The dynamic tasks expose both vanilla regimes. Frequent
         replanning is hurt by inference latency while the turntable keeps moving, giving only 10.8.
         Executing 50 actions per query helps (25.8), but the later actions drift over the long horizon.
@@ -833,13 +874,14 @@
     <div class="sec-label">BibTeX</div>
     <div class="bib">
       <button type="button" class="copy" id="copy-bib">Copy</button>
-<pre id="bib-text">@article{sun2026staircase,
-  title   = {Staircase Policy: Streaming Inference for World-Action Models
-             with Large Action Chunks},
-  author  = {Sun, Guoheng and Chen, Chen and Wang, Jin and Li, Ang
-             and Lv, Teresa},
-  journal = {arXiv preprint},
-  year    = {2026}
+<pre id="bib-text">@misc{sun2026staircasepolicystreaminginference,
+      title={Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks}, 
+      author={Guoheng Sun and Chen Chen and Jin Wang and Ang Li and Teresa Lv},
+      year={2026},
+      eprint={2609.36471},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2609.36471}, 
 }</pre>
     </div>
   </div>
@@ -881,61 +923,57 @@
   }
 
   /* ------------------------------------------------------------
-     1. Staircase demo: replays Algorithm 1 event by event
+     1. Chunk demo: replays Algorithm 1 (and two vanilla baselines)
+        event by event
      ------------------------------------------------------------ */
   var K = 5, G = 10, H = 50;
-  // Fixed, smooth "true" trajectory and fixed noise, so every run looks the same.
+  // Fixed optimal trajectory (drawn as dashed ghosts) and fixed noise, so every run looks the same.
   var target = [], noise = [];
   (function () {
     var seed = 7;
     function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
     for (var i = 0; i < H; i++) {
-      target.push(0.52 + 0.26 * Math.sin(i / 7.5) + 0.1 * Math.sin(i / 2.9 + 1));
+      target.push(0.5 + 0.24 * Math.sin(i / 8.5) + 0.08 * Math.sin(i / 4.3 + 1));
       noise.push((rnd() - 0.5) * 1.1);
     }
   })();
+
+  // How far each scheme's actions sit from the optimal ones. H_exec=10 replans on every frame, S-WAM
+  // refreshes its condition every 10 actions, and H_exec=50 drifts once it runs past o0.
+  var DEV = {
+    van10: function (i) { return 0.022 * Math.sin(i / 2.9 + 1.3); },
+    stair: function (i) { return 0.04 * Math.sin(i / 3.1 + 0.5); },
+    van50: function (i) { return i < G ? 0.01 * Math.sin(i / 2.7) : 0.005 * (i - G) + 0.015 * Math.sin(i / 3.3); }
+  };
 
   var chunkEl = $("chunk"), trackEl = $("track");
   var cols = [];
   for (var c = 0; c < K; c++) {
     var sc = document.createElement("div");
     sc.className = "sc";
-    sc.innerHTML = '<div class="sc-h"><b>' + (c * G + 1) + "–" + (c * G + G) + "</b><span>actions</span></div>" +
+    sc.innerHTML = '<div class="sc-h"><b></b><span>actions</span></div>' +
       '<div class="dots">' + "<i></i>".repeat(K) + "</div>" +
-      '<div class="bars">' + "<i></i>".repeat(G) + "</div>" +
+      '<div class="bars">' + "<span><em></em><i></i></span>".repeat(G) + "</div>" +
       '<div class="state">noise</div>';
     chunkEl.appendChild(sc);
-    var bars = sc.querySelectorAll(".bars i");
+    var bars = sc.querySelectorAll(".bars i"), ghosts = sc.querySelectorAll(".bars em");
     for (var b = 0; b < G; b++) bars[b].style.background = HUES[c];
-    cols.push({ el: sc, dots: sc.querySelectorAll(".dots i"), bars: bars, state: sc.querySelector(".state") });
+    cols.push({ el: sc, range: sc.querySelector(".sc-h b"), dots: sc.querySelectorAll(".dots i"), bars: bars, ghosts: ghosts, state: sc.querySelector(".state") });
   }
   trackEl.innerHTML = "<i></i>".repeat(H);
   var ticks = trackEl.querySelectorAll("i");
-  // Turntable geometry: the disc is an ellipse (camera looks down at an angle).
-  var TT = { cx: 100, cy: 84, rx: 84, ry: 38, r: 0.66, deg0: 62, degPerAction: 22.5 / 50 };
-  function ttPoint(deg, r) {
-    var a = deg * Math.PI / 180;
-    return [TT.cx + TT.rx * r * Math.cos(a), TT.cy + TT.ry * r * Math.sin(a)];
-  }
-  (function () {
-    var g = $("tt-ticks"), html = "";
-    // One rim tick per 22.5 deg, i.e. per 50 actions (one chunk) of rotation.
-    for (var k = 0; k < 16; k++) {
-      var p = ttPoint(k * 22.5, 0.86), q = ttPoint(k * 22.5, 0.96);
-      html += '<line data-k="' + k + '" x1="' + p[0].toFixed(1) + '" y1="' + p[1].toFixed(1) + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>';
-    }
-    g.innerHTML = html;
-  })();
-  var ttTicks = $("tt-ticks").querySelectorAll("line");
+  // Observations o0-o4: the stack-bowl (dynamic) frames from the paper, one per sub-chunk boundary.
+  var FRAMES = [0, 1, 2, 3, 4].map(function (k) { var u = "static/images/frames/o" + k + ".jpg"; new Image().src = u; return u; });
 
   function fresh() {
-    return { steps: [0, 0, 0, 0, 0], emitted: [false, false, false, false, false], emitTau: [0, 0, 0, 0, 0],
-      exec: 0, cond: 0, tauEval: null, active: null, vlm: 0, f: 0, dit: 0, first: null, maxAge: 0, narr: "" };
+    return { gen: [true, true, true, true, true], steps: [0, 0, 0, 0, 0], emitted: [false, false, false, false, false],
+      trackCol: [], exec: 0, cond: 0, tauEval: null,
+      active: null, vlm: 0, f: 0, dit: 0, first: null, maxAge: 0, narr: "" };
   }
-  function execEvents(evs, from, to, narrFn) {
+  function execEvents(evs, from, to, col, narrFn) {
     for (var n = from; n < to; n++) (function (n) {
       evs.push({ dur: 85, fn: function (s) {
-        s.active = null; s.exec = n + 1;
+        s.active = null; s.exec = n + 1; s.trackCol[n] = col(n);
         if (s.first === null) s.first = s.dit;
         s.maxAge = Math.max(s.maxAge, s.exec - s.cond * G);
         s.narr = narrFn(n);
@@ -949,66 +987,100 @@
       evs.push({ dur: 650, fn: function (s) {
         s.active = "f"; s.f++; s.cond = j;
         s.narr = j === 0
-          ? "The future predictor encodes o\u2080 and predicts the future latent."
-          : "Boundary " + j + ": new frame o" + SUB[j] + ". Only the future predictor re-runs on it; the backbone context from o\u2080 is reused.";
+          ? "The future predictor encodes o₀ and predicts the future latent."
+          : "Boundary " + j + ": new frame o" + SUB[j] + ". Only the future predictor re-runs on it; the backbone context from o₀ is reused.";
       } });
       evs.push({ dur: 750, fn: function (s) {
         s.active = "dit"; s.dit++; s.tauEval = j / K;
         for (var c = j; c < K; c++) s.steps[c]++;
-        s.narr = "Expert pass " + (j + 1) + " of 5 at \u03c4 = " + (j / K).toFixed(1) + ", conditioned on o" + SUB[j] + ". It updates every action not yet executed.";
+        s.narr = "Expert pass " + (j + 1) + " of 5 at τ = " + (j / K).toFixed(1) + ", conditioned on o" + SUB[j] + ". It updates every action not yet executed.";
       } });
       evs.push({ dur: 650, fn: function (s) {
-        s.active = null; s.emitted[j] = true; s.emitTau[j] = j / K;
-        s.narr = "Actions " + (j * G + 1) + "\u2013" + (j * G + G) + " are read out by extrapolating this velocity to \u03c4 = 1, after " + (j + 1) + (j ? " passes" : " pass") + ", and handed to the robot.";
+        s.active = null; s.emitted[j] = true;
+        s.narr = "Actions " + (j * G + 1) + "–" + (j * G + G) + " are read out by extrapolating this velocity to τ = 1, after " + (j + 1) + (j ? " passes" : " pass") + ", and handed to the robot.";
       } });
-      execEvents(evs, j * G, j * G + G, function (n) {
+      execEvents(evs, j * G, j * G + G, function (n) { return Math.floor(n / G); }, function (n) {
         return "Executing action " + (n + 1) + ". " + (j < K - 1 ? "Once these ten are done, the robot observes o" + SUB[j + 1] + "." : "Last sub-chunk; the next chunk starts with a new backbone pass.");
       });
     })(j);
     evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "50 actions from 1 backbone pass, 5 expert passes and 5 predictor refreshes. No action ran more than 10 actions past its conditioning frame."; } });
     return evs;
   }
-  function buildVan() {
+
+  function buildVan50() {
     var evs = [];
     evs.push({ dur: 1100, fn: function (s) { s.active = "vlm"; s.vlm++; s.narr = "The backbone reads o₀ and the instruction once for the whole chunk."; } });
-    evs.push({ dur: 650, fn: function (s) { s.active = "f"; s.f++; s.narr = "The future predictor encodes o\u2080 and predicts the future latent, once for the whole chunk."; } });
+    evs.push({ dur: 650, fn: function (s) { s.active = "f"; s.f++; s.narr = "The future predictor encodes o₀ and predicts the future latent, once for the whole chunk."; } });
     for (var k = 0; k < K; k++) (function (k) {
       evs.push({ dur: 650, fn: function (s) {
         s.active = "dit"; s.dit++; s.tauEval = k / K;
         for (var c = 0; c < K; c++) s.steps[c]++;
-        s.narr = "Expert pass " + (k + 1) + " of 5 at \u03c4 = " + (k / K).toFixed(1) + ", conditioned on o\u2080. Nothing can run until all five finish.";
+        s.narr = "Expert pass " + (k + 1) + " of 5 at τ = " + (k / K).toFixed(1) + ", conditioned on o₀. Nothing can run until all five finish.";
       } });
     })(k);
     evs.push({ dur: 650, fn: function (s) {
       s.active = null;
-      for (var c = 0; c < K; c++) { s.emitted[c] = true; s.emitTau[c] = 1; }
-      s.narr = "After five Euler steps the buffer reaches \u03c4 = 1 and all 50 actions are ready.";
+      for (var c = 0; c < K; c++) s.emitted[c] = true;
+      s.narr = "After five Euler steps the buffer reaches τ = 1 and all 50 actions are ready.";
     } });
-    execEvents(evs, 0, H, function (n) {
-      return n < G ? "Executing action " + (n + 1) + "." : "Executing action " + (n + 1) + ", still planned from o\u2080 while the turntable keeps turning.";
+    execEvents(evs, 0, H, function (n) { return Math.floor(n / G); }, function (n) {
+      return n < G ? "Executing action " + (n + 1) + "." : "Executing action " + (n + 1) + ", still planned from o₀ while the scene keeps changing.";
     });
-    evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "The same 1 backbone pass and 5 expert passes, but actions 11\u201350 were all planned from o\u2080."; } });
+    evs.push({ dur: 2600, fn: function (s) { s.active = null; s.narr = "The same 1 backbone pass and 5 expert passes as S-WAM, but actions 11–50 were all planned from o₀."; } });
     return evs;
   }
 
+  // H_exec = 10: every query generates a 10-action chunk and executes all of it.
+  function buildVan10() {
+    var evs = [];
+    evs.push({ dur: 1, fn: function (s) { for (var c = 0; c < K; c++) s.gen[c] = false; } });
+    for (var r = 0; r < K; r++) (function (r) {
+      evs.push({ dur: 900, fn: function (s) {
+        s.gen[r] = true; s.active = "vlm"; s.vlm++; s.cond = r; s.tauEval = null;
+        s.narr = r === 0
+          ? "Query 1 of 5: the backbone reads o\u2080 and the instruction."
+          : "Query " + (r + 1) + " of 5: replan from scratch. The backbone reads o" + SUB[r] + " and the instruction again.";
+      } });
+      evs.push({ dur: 450, fn: function (s) { s.active = "f"; s.f++; s.narr = "The future predictor encodes o" + SUB[r] + " and predicts the future latent."; } });
+      for (var k = 0; k < K; k++) (function (k) {
+        evs.push({ dur: 380, fn: function (s) {
+          s.active = "dit"; s.dit++; s.tauEval = k / K; s.steps[r]++;
+          s.narr = "Expert pass " + (k + 1) + " of 5 at \u03c4 = " + (k / K).toFixed(1) + " over a 10-action chunk.";
+        } });
+      })(k);
+      evs.push({ dur: 550, fn: function (s) {
+        s.active = null; s.emitted[r] = true;
+        s.narr = "Actions " + (r * G + 1) + "\u2013" + (r * G + G) + " are ready after 5 passes.";
+      } });
+      execEvents(evs, r * G, r * G + G, function (n) { return Math.floor(n / G); }, function (n) {
+        return "Executing action " + (n + 1) + "." + (r < K - 1 && n === r * G + G - 1 ? " Then the robot observes o" + SUB[r + 1] + " and queries the full policy again." : "");
+      });
+    })(r);
+    evs.push({ dur: 2800, fn: function (s) { s.active = null; s.narr = "50 actions took 5 backbone passes and 25 expert passes, five times the compute S-WAM spends on the same 50 actions."; } });
+    return evs;
+  }
+
+  var BUILD = { stair: buildStair, van10: buildVan10, van50: buildVan50 };
   var mode = "stair", events = buildStair(), idx = 0, st = fresh(), timer = null, playing = false;
 
   function render(s) {
     for (var c = 0; c < K; c++) {
-      var col = cols[c], steps = s.steps[c];
+      var col = cols[c], steps = s.steps[c], base = c * G;
+      col.range.textContent = (base + 1) + "–" + (base + G);
       for (var d = 0; d < K; d++) col.dots[d].style.background = d < steps ? HUES[c] : "";
-      var execInCol = Math.max(0, Math.min(G, s.exec - c * G));
-      var tau = s.emitted[c] ? s.emitTau[c] : steps / K;
-      // Readout extrapolates to tau = 1, so emitted actions show only a small residual.
-      var amp = s.emitted[c] ? (1 - s.emitTau[c]) * 0.22 : (1 - tau);
+      var execInCol = Math.max(0, Math.min(G, s.exec - base));
+      // A read-out sub-chunk is the clean extrapolated trajectory; before that, noise shrinks with each pass.
+      var amp = s.emitted[c] ? 0 : 1 - steps / K;
       for (var b = 0; b < G; b++) {
-        var i = c * G + b;
-        var v = Math.max(0.06, Math.min(1, target[i] + noise[i] * amp));
-        col.bars[b].style.height = (v * 100).toFixed(1) + "%";
+        var i = base + b;
+        var v = Math.max(0.06, Math.min(1, target[i] + DEV[mode](i) + noise[i] * amp));
+        col.ghosts[b].style.height = (target[i] * 100).toFixed(1) + "%";
+        col.bars[b].style.height = s.gen[c] ? (v * 100).toFixed(1) + "%" : "0%";
         col.bars[b].classList.toggle("x", b < execInCol);
       }
       var label;
-      if (execInCol === G) label = "done";
+      if (!s.gen[c]) label = "not generated";
+      else if (execInCol === G) label = "done";
       else if (execInCol > 0) label = "running";
       else if (s.emitted[c]) label = "read out";
       else if (steps === 0) label = "noise";
@@ -1016,38 +1088,24 @@
       col.state.textContent = label;
       col.el.classList.toggle("emit", s.emitted[c] && execInCol < G);
       col.el.classList.toggle("done", execInCol === G);
+      col.el.classList.toggle("wait", !s.gen[c]);
     }
-    for (var t = 0; t < H; t++) ticks[t].style.background = t < s.exec ? HUES[Math.floor(t / G)] : "";
+    for (var t = 0; t < H; t++) ticks[t].style.background = t < s.exec ? HUES[s.trackCol[t]] : "";
     $("exec-lbl").textContent = "executed " + s.exec + " / 50";
-    $("tau").textContent = "expert at \u03c4 = " + (s.tauEval === null ? "\u2013" : s.tauEval.toFixed(1));
+    $("tau").textContent = "expert at τ = " + (s.tauEval === null ? "–" : s.tauEval.toFixed(1));
+    var cam = Math.min(K - 1, Math.floor(s.exec / G));
+    if ($("cam").getAttribute("src") !== FRAMES[cam]) $("cam").setAttribute("src", FRAMES[cam]);
+    // The future predictor's output, shown as the next observation.
+    var predK = Math.min(K - 1, s.cond + 1);
+    if ($("cond-img").getAttribute("src") !== FRAMES[predK]) $("cond-img").setAttribute("src", FRAMES[predK]);
+    $("cond-cap").innerHTML = "plan: o<sub>" + predK + "</sub>";
+    $("cam-t").innerHTML = "o<sub>" + cam + "</sub>";
     $("cond-lbl").innerHTML = "o<sub>" + s.cond + "</sub>";
-    var age = Math.max(0, s.exec - s.cond * G);
+    var age = Math.max(0, s.exec - s.cond * G), stale = age > G;
     $("age-lbl").textContent = age;
-    var lag = age * TT.degPerAction;
-    $("turn-lbl").textContent = lag.toFixed(1) + "\u00b0";
-    // Turntable: rotation follows executed actions; the ghost sits where the bowl was in o_cond.
-    var rot = s.exec * TT.degPerAction;
-    for (var q = 0; q < ttTicks.length; q++) {
-      var a = q * 22.5 + rot, p1 = ttPoint(a, 0.86), p2 = ttPoint(a, 0.96);
-      ttTicks[q].setAttribute("x1", p1[0].toFixed(1)); ttTicks[q].setAttribute("y1", p1[1].toFixed(1));
-      ttTicks[q].setAttribute("x2", p2[0].toFixed(1)); ttTicks[q].setAttribute("y2", p2[1].toFixed(1));
-    }
-    var now = ttPoint(TT.deg0 + rot, TT.r), was = ttPoint(TT.deg0 + s.cond * G * TT.degPerAction, TT.r);
-    $("tt-bowl").setAttribute("transform", "translate(" + now[0].toFixed(1) + " " + now[1].toFixed(1) + ")");
-    $("tt-ghost").setAttribute("cx", was[0].toFixed(1)); $("tt-ghost").setAttribute("cy", was[1].toFixed(1));
-    var arc = "";
-    for (var d = 0; d <= 12; d++) {
-      var pt = ttPoint(TT.deg0 + s.cond * G * TT.degPerAction + lag * d / 12, TT.r + 0.2);
-      arc += (d ? "L" : "M") + pt[0].toFixed(1) + " " + pt[1].toFixed(1);
-    }
-    $("tt-arc").setAttribute("d", lag > 0 ? arc : "");
-    $("tt-lag").textContent = "lag " + lag.toFixed(1) + "\u00b0";
-    $("tt-lag").setAttribute("class", age > G ? "warn" : "");
-    $("tt-cap").innerHTML = "dashed = bowl in o<tspan dy=\"2\" font-size=\"7.5\">" + s.cond + "</tspan>";
-    var stale = age > G;
+    $("inset").classList.toggle("stale", stale);
     $("age").classList.toggle("stale", stale);
     $("age-row").classList.toggle("stale", stale);
-    $("turn-row").classList.toggle("stale", stale);
     $("age").firstElementChild.style.width = (age / H * 100) + "%";
     ["vlm", "f", "dit"].forEach(function (m) {
       $("m-" + m).classList.toggle("on", s.active === m);
@@ -1057,8 +1115,7 @@
     $("t-dit").textContent = s.dit;
     $("t-first").textContent = s.first === null ? "–" : s.first;
     $("t-fresh").textContent = s.exec ? s.maxAge + " actions" : "–";
-    var narr = s.narr.replace(/o([₀-₄])/g, function (_, d) { return "o<sub>" + (d.charCodeAt(0) - 0x2080) + "</sub>"; });
-    $("narr").innerHTML = narr;
+    $("narr").innerHTML = s.narr.replace(/o([₀-₄])/g, function (_, d) { return "o<sub>" + (d.charCodeAt(0) - 0x2080) + "</sub>"; });
   }
 
   function stepOnce() {
@@ -1079,7 +1136,6 @@
     clearTimeout(timer);
     if (p) loop();
   }
-  // Show a mid-chunk still before anything plays, so the panel reads at rest.
   function seek(n) {
     idx = 0; st = fresh();
     for (var i = 0; i < n && i < events.length; i++) { events[i].fn(st); idx++; }
@@ -1087,16 +1143,16 @@
   }
   function setMode(m) {
     mode = m;
-    $("mode-stair").setAttribute("aria-pressed", m === "stair");
-    $("mode-van").setAttribute("aria-pressed", m === "van");
-    events = m === "stair" ? buildStair() : buildVan();
+    Object.keys(BUILD).forEach(function (k) { $("mode-" + k).setAttribute("aria-pressed", k === m); });
+    events = BUILD[m]();
     seek(1);
   }
-  $("mode-stair").addEventListener("click", function () { setMode("stair"); if (playing) setPlaying(true); });
-  $("mode-van").addEventListener("click", function () { setMode("van"); if (playing) setPlaying(true); });
+  Object.keys(BUILD).forEach(function (k) {
+    $("mode-" + k).addEventListener("click", function () { setMode(k); if (playing) setPlaying(true); });
+  });
   $("d-play").addEventListener("click", function () { setPlaying(!playing); });
   $("d-step").addEventListener("click", function () { setPlaying(false); stepOnce(); });
-  $("d-reset").addEventListener("click", function () { seek(0); render(st); $("narr").textContent = "Press Play or Step to run the chunk."; if (playing) setPlaying(true); });
+  $("d-reset").addEventListener("click", function () { seek(0); $("narr").textContent = "Press Play or Step to run the chunk."; if (playing) setPlaying(true); });
 
   // Resting frame: boundary 2 of the staircase, mid-execution of sub-chunk 3.
   seek(1 + 2 * (3 + G) + 3 + 4);
@@ -1159,15 +1215,15 @@
      3. Real-robot task browser (Table: per-task success, 40 trials)
      ------------------------------------------------------------ */
   var TASKS = [
-    { id: "stack_bowl_dynamic", name: "Stack bowl", dyn: true,  r: [10.0, 25.0, 57.5], demos: 30, len: "14.6 s", prompt: "stack the red bowl on the blue bowl", desc: "Both bowls rotate on the turntable." },
-    { id: "hang_cup_dynamic",   name: "Hang cup", dyn: true,    r: [7.5, 20.0, 27.5],  demos: 30, len: "21.2 s", prompt: "hang the yellow cup on the cup rack", desc: "The rack rotates, changing its position and orientation." },
-    { id: "place_corn_dynamic", name: "Place corn", dyn: true,  r: [15.0, 32.5, 47.5], demos: 30, len: "16.1 s", prompt: "place the corn in the bowl", desc: "Corn and distractors rotate; the bowl stays put." },
-    { id: "stack_bowl_static",  name: "Stack bowl", dyn: false, r: [85.0, 72.5, 90.0], demos: 30, len: "19.1 s", prompt: "stack the red bowl on the blue bowl", desc: "Pick the red bowl and place it inside the blue bowl." },
-    { id: "hang_cup_static",    name: "Hang cup", dyn: false,   r: [57.5, 52.5, 70.0], demos: 30, len: "17.0 s", prompt: "hang the yellow cup on the cup rack", desc: "Pick the yellow cup and hang it on the rack." },
-    { id: "place_corn_static",  name: "Place corn", dyn: false, r: [77.5, 60.0, 75.0], demos: 30, len: "18.1 s", prompt: "place the corn in the bowl", desc: "Pick the corn among distractors and place it in the bowl." },
-    { id: "put_lid",            name: "Put lid on cup", dyn: false, r: [75.0, 67.5, 80.0], demos: 30, len: "19.1 s", prompt: "put the blue lid on the blue cup", desc: "Precise placement: the lid must cover the cup opening." },
-    { id: "pour_water",         name: "Pour water", dyn: false, r: [62.5, 50.0, 67.5], demos: 30, len: "30.2 s", prompt: "pour the water from the red cup into the blue cup", desc: "Sustained manipulation over the whole pour." },
-    { id: "put_blue_bowl",      name: "Bowl in drawer", dyn: false, r: [47.5, 40.0, 52.5], demos: 30, len: "44.4 s", prompt: "put the blue bowl in the second drawer", desc: "Multi-stage: open the drawer, then place the bowl." }
+    { id: "stack_bowl_dynamic", name: "Stack bowl", dyn: true,  r: [10.0, 25.0, 57.5], demos: 30, len: "14.6 s", prompt: "stack the red bowl on the blue bowl", desc: "Both bowls rotate on the turntable.", clip: {"speed": 3, "ours": ["S", 19.5], "e20": ["F", 24.0], "e50": ["S", 44.0], "cap": "Same bowl layout on the turning turntable. S-WAM stacks in 19.5 s and vanilla 50 in 44.0 s; vanilla 20 knocks a bowl off the turntable."} },
+    { id: "hang_cup_dynamic",   name: "Hang cup", dyn: true,    r: [7.5, 20.0, 27.5],  demos: 30, len: "21.2 s", prompt: "hang the yellow cup on the cup rack", desc: "The rack rotates, changing its position and orientation.", clip: {"speed": 2, "ours": ["S", 23.0], "e20": ["F", 28.5], "e50": ["F", 20.6], "cap": "The rack turns with the turntable. S-WAM hangs the cup in 23.0 s; both baselines drop it."} },
+    { id: "place_corn_dynamic", name: "Place corn", dyn: true,  r: [15.0, 32.5, 47.5], demos: 30, len: "16.1 s", prompt: "place the corn in the bowl", desc: "Corn and distractors rotate; the bowl stays put.", clip: {"speed": 3, "ours": ["S", 13.0], "e20": ["F", 39.4], "e50": ["S", 40.0], "cap": "Objects move on the turntable; the starting layouts of the three trials differ. S-WAM places the corn in 13.0 s and vanilla 50 in 40.0 s; vanilla 20 never catches the moving corn."} },
+    { id: "stack_bowl_static",  name: "Stack bowl", dyn: false, r: [85.0, 72.5, 90.0], demos: 30, len: "19.1 s", prompt: "stack the red bowl on the blue bowl", desc: "Pick the red bowl and place it inside the blue bowl.", clip: {"speed": 3, "ours": ["S", 23.0], "e20": ["S", 41.0], "e50": ["S", 31.5], "cap": "Same layout, all three succeed: S-WAM in 23.0 s, vanilla 20 in 41.0 s, vanilla 50 in 31.5 s."} },
+    { id: "hang_cup_static",    name: "Hang cup", dyn: false,   r: [57.5, 52.5, 70.0], demos: 30, len: "17.0 s", prompt: "hang the yellow cup on the cup rack", desc: "Pick the yellow cup and hang it on the rack.", clip: {"speed": 2, "ours": ["S", 14.0], "e20": ["S", 21.0], "e50": ["S", 22.0], "cap": "Same cup position, all three succeed: S-WAM in 14.0 s, vanilla 20 in 21.0 s, vanilla 50 in 22.0 s."} },
+    { id: "place_corn_static",  name: "Place corn", dyn: false, r: [77.5, 60.0, 75.0], demos: 30, len: "18.1 s", prompt: "place the corn in the bowl", desc: "Pick the corn among distractors and place it in the bowl.", clip: {"speed": 2, "ours": ["S", 16.0], "e20": ["S", 20.5], "e50": ["S", 39.0], "cap": "Same layout with distractors, all three succeed: S-WAM in 16.0 s, vanilla 20 in 20.5 s, vanilla 50 in 39.0 s."} },
+    { id: "put_lid",            name: "Put lid on cup", dyn: false, r: [75.0, 67.5, 80.0], demos: 30, len: "19.1 s", prompt: "put the blue lid on the blue cup", desc: "Precise placement: the lid must cover the cup opening.", clip: {"speed": 4, "ours": ["S", 31.5], "e20": ["S", 70.0], "e50": ["F", 62.5], "cap": "Same layout. S-WAM puts the lid on in 31.5 s and vanilla 20 in 70.0 s; vanilla 50 never lifts the lid off the table."} },
+    { id: "pour_water",         name: "Pour water", dyn: false, r: [62.5, 50.0, 67.5], demos: 30, len: "30.2 s", prompt: "pour the water from the red cup into the blue cup", desc: "Sustained manipulation over the whole pour.", clip: {"speed": 5, "ours": ["S", 32.0], "e20": ["F", 92.4], "e50": ["S", 47.5], "cap": "Same layout. S-WAM reaches the pouring pose at 32.0 s and vanilla 50 at 47.5 s; vanilla 20 holds the cup above the target without pouring."} },
+    { id: "put_blue_bowl",      name: "Bowl in drawer", dyn: false, r: [47.5, 40.0, 52.5], demos: 30, len: "44.4 s", prompt: "put the blue bowl in the second drawer", desc: "Multi-stage: open the drawer, then place the bowl.", clip: {"speed": 5, "ours": ["S", 92.5], "e20": ["F", 88.9], "e50": ["F", 12.1], "cap": "Same bowl position. S-WAM opens the drawer and places the bowl in 92.5 s; both baselines fail at the drawer handle."} }
   ];
   var METHODS = [
     { k: "Vanilla, H<sub>exec</sub>=20", t: "Vanilla, H_exec=20", c: "var(--base-1)" },
@@ -1175,6 +1231,40 @@
     { k: "S-WAM", t: "S-WAM", c: "var(--accent)", ours: true }
   ];
   var chips = $("task-chips"), rbars = $("rbars");
+  var VK = ["ours", "e20", "e50"], vids = VK.map(function (k) { return $("v-" + k); });
+  var clipsPlaying = !reduce, clipsVisible = false;
+  function loadClips(t) {
+    var c = t.clip;
+    VK.forEach(function (k, j) {
+      var v = vids[j], r = c[k];
+      v.src = "static/videos/clips/" + t.id + "_" + k + ".mp4";
+      v.setAttribute("aria-label", (j ? METHODS[j - 1].t : "S-WAM") + ", " + t.name + (t.dyn ? " (dynamic)" : "") + ": " + (r[0] === "S" ? "success" : "failure"));
+      var res = $("res-" + k);
+      res.textContent = r[0] === "S" ? "Success \u00b7 " + r[1].toFixed(1) + " s" : "Failure";
+      res.className = "res " + (r[0] === "S" ? "ok" : "fail");
+    });
+    $("clip-cap").textContent = c.cap;
+    $("clip-speed").textContent = c.speed + "\u00d7 speed \u00b7 timer in real seconds";
+    syncPlay();
+  }
+  function syncPlay() {
+    vids.forEach(function (v) {
+      if (clipsPlaying && clipsVisible) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      else v.pause();
+    });
+    $("clip-play").textContent = clipsPlaying ? "Pause" : "Play";
+  }
+  // The three clips of a task have the same length; keep the baselines on the S-WAM clock.
+  vids[0].addEventListener("timeupdate", function () {
+    for (var j = 1; j < 3; j++) if (Math.abs(vids[j].currentTime - vids[0].currentTime) > 0.3) vids[j].currentTime = vids[0].currentTime;
+  });
+  $("clip-play").addEventListener("click", function () { clipsPlaying = !clipsPlaying; syncPlay(); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) { clipsVisible = e.isIntersecting; });
+      syncPlay();
+    }, { threshold: 0.2 }).observe($("clips"));
+  } else { clipsVisible = true; }
   var rEls = METHODS.map(function (m) {
     var k = document.createElement("div");
     k.className = "k" + (m.ours ? " ours" : "");
@@ -1193,6 +1283,7 @@
   function showTask(i) {
     var t = TASKS[i];
     Array.prototype.forEach.call(chips.children, function (b, j) { b.setAttribute("aria-pressed", j === i); });
+    loadClips(t);
     var img = $("task-img");
     img.src = "static/images/tasks/" + t.id + ".jpg";
     img.alt = "Five frames of the " + t.name.toLowerCase() + (t.dyn ? " (dynamic)" : "") + " demonstration.";
@@ -1215,6 +1306,35 @@
   // Axis ticks must line up with the 84% scale used by the bars.
   ax.style.width = "84%";
   showTask(0);
+
+  /* ------------------------------------------------------------
+     4. Big videos (demo_v2)
+     ------------------------------------------------------------ */
+  var VIDS = [
+    { f: "compare", t: "Same scene, three policies", len: "2:00",
+      d: "Nine tasks in two chapters, static then dynamic. Each segment puts S-WAM next to vanilla chunking at H_exec = 20 and 50 on the same task, shown from the third-person and wrist cameras. The timer shows real seconds and stops when the task is completed." },
+    { f: "diverse", t: "Across tasks and layouts", len: "1:44",
+      d: "S-WAM alone. An overview with one trial per task, then successful trials on each of the nine tasks, every tile a different object layout." },
+    { f: "failures", t: "Failure modes", len: "0:53",
+      d: "Where each policy fails: vanilla at H_exec = 20 is too slow to follow moving objects, vanilla at H_exec = 50 is imprecise, and S-WAM has occasional failures of its own." }
+  ];
+  var bigvid = $("bigvid"), vtabs = $("vtabs");
+  function showVid(i, play) {
+    var v = VIDS[i];
+    Array.prototype.forEach.call(vtabs.children, function (b, j) { b.setAttribute("aria-selected", j === i); });
+    bigvid.poster = "static/videos/" + v.f + "_poster.jpg";
+    bigvid.src = "static/videos/" + v.f + ".mp4";
+    $("vdesc").textContent = v.d;
+    if (play) { var p = bigvid.play(); if (p && p.catch) p.catch(function () {}); }
+  }
+  VIDS.forEach(function (v, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "vtab"; b.setAttribute("role", "tab");
+    b.innerHTML = "<b>" + v.t + "</b><span>" + v.len + "</span>";
+    b.addEventListener("click", function () { showVid(i, true); });
+    vtabs.appendChild(b);
+  });
+  showVid(0, false);
 
   /* ------------------------------------------------------------
      BibTeX copy
