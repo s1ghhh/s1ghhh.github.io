@@ -1,7 +1,7 @@
 {
  "hang_cup_static": {
-  "speed": 2,
-  "dur": 12.66,
+  "speed": 1,
+  "dur": 24.2,
   "panels": {
    "ours": {
     "run": "0828_142200_t04",
@@ -21,8 +21,8 @@
   }
  },
  "stack_bowl_static": {
-  "speed": 3,
-  "dur": 15.17,
+  "speed": 5,
+  "dur": 9.6,
   "panels": {
    "ours": {
     "run": "0824_205113_t02",
@@ -42,8 +42,8 @@
   }
  },
  "place_corn_static": {
-  "speed": 2,
-  "dur": 20.74,
+  "speed": 4,
+  "dur": 11.07,
   "panels": {
    "ours": {
     "run": "1005_140418_t06",
@@ -63,8 +63,8 @@
   }
  },
  "put_lid": {
-  "speed": 4,
-  "dur": 18.88,
+  "speed": 8,
+  "dur": 10.07,
   "panels": {
    "ours": {
     "run": "0922_130414_t07",
@@ -84,34 +84,34 @@
   }
  },
  "pour_water": {
-  "speed": 5,
-  "dur": 19.47,
+  "speed": 8,
+  "dur": 19.27,
   "panels": {
    "ours": {
     "run": "0922_134836_t02",
     "result": "Success",
-    "seconds": 32.0
+    "seconds": 47.0
    },
    "e20": {
-    "run": "0922_141951_t01",
+    "run": "0922_141951_t02",
     "result": "Failure",
-    "seconds": 92.4
+    "seconds": 144.6
    },
    "e50": {
     "run": "0922_141514_t00",
     "result": "Success",
-    "seconds": 47.5
+    "seconds": 67.0
    }
   }
  },
  "put_blue_bowl": {
-  "speed": 5,
-  "dur": 19.8,
+  "speed": 8,
+  "dur": 12.31,
   "panels": {
    "ours": {
-    "run": "0922_145558_t01",
+    "run": "0922_145137_t00",
     "result": "Success",
-    "seconds": 92.5
+    "seconds": 53.0
    },
    "e20": {
     "run": "0922_151028_t01",
@@ -119,15 +119,15 @@
     "seconds": 88.9
    },
    "e50": {
-    "run": "0922_150537_t03",
-    "result": "Failure",
-    "seconds": 12.1
+    "run": "0922_150537_t02",
+    "result": "Success",
+    "seconds": 41.8
    }
   }
  },
  "stack_bowl_dynamic": {
-  "speed": 3,
-  "dur": 16.12,
+  "speed": 5,
+  "dur": 10.2,
   "panels": {
    "ours": {
     "run": "0828_131902_t04",
@@ -147,8 +147,8 @@
   }
  },
  "hang_cup_dynamic": {
-  "speed": 2,
-  "dur": 15.24,
+  "speed": 3,
+  "dur": 10.69,
   "panels": {
    "ours": {
     "run": "0828_140600_t19",
@@ -168,8 +168,8 @@
   }
  },
  "place_corn_dynamic": {
-  "speed": 3,
-  "dur": 14.45,
+  "speed": 4,
+  "dur": 10.26,
   "panels": {
    "ours": {
     "run": "0903_141355_t00",
@@ -177,14 +177,14 @@
     "seconds": 13.0
    },
    "e20": {
-    "run": "0903_140419_t02",
+    "run": "0903_135951_t02",
     "result": "Failure",
-    "seconds": 39.4
+    "seconds": 34.0
    },
    "e50": {
-    "run": "0903_135017_t04",
+    "run": "0903_135017_t05",
     "result": "Success",
-    "seconds": 40.0
+    "seconds": 36.0
    }
   }
  }

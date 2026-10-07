@@ -347,19 +347,13 @@
   .tip.on { opacity: 1; }
 
   /* ---- videos ---- */
-  .vtabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 12px; }
-  .vtab {
-    text-align: left; font: inherit; cursor: pointer; background: var(--surface); color: var(--ink);
-    border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; display: grid; gap: 2px;
-  }
-  .vtab:hover { border-color: var(--ink-2); }
-  .vtab b { font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; }
-  .vtab span { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
-  .vtab[aria-selected="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
-  .vtab[aria-selected="true"] span { color: #C9D0DC; }
+  .vlist { display: grid; gap: 34px; }
+  .vitem { display: grid; gap: 10px; }
+  .vhead { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+  .vhead h3 { margin: 0; }
+  .vnum, .vlen { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
   .bigvid { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; background: #fff; border: 1px solid var(--line); }
-  .vdesc { font-size: 0.9rem; color: var(--ink-2); margin-top: 10px; max-width: 78ch; }
-  @media (max-width: 620px) { .vtabs { grid-template-columns: 1fr; } }
+  .vdesc { font-size: 0.92rem; color: var(--ink-2); max-width: 78ch; margin: 0; }
 
   .clips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
   .clip { margin: 0; min-width: 0; }
@@ -368,13 +362,16 @@
   .clip-h .res { margin-left: auto; font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
   .clip-h .res.ok { color: #2E7D4F; }
   .clip-h .res.fail { color: #B03A2E; }
-  .clip video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: #E4E7EB; }
+  .cams { display: grid; gap: 6px; }
+  .cam { position: relative; }
+  .cam video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; background: #E4E7EB; }
+  .cam-tag { position: absolute; left: 6px; top: 6px; font-family: var(--mono); font-size: 0.68rem; color: #fff; background: rgba(18,24,38,.7); padding: 1px 6px; border-radius: 4px; }
   .clip-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 10px 0 4px; font-size: 0.86rem; color: var(--ink-2); }
   .clip-foot .ctrl { margin-left: auto; }
   .speed-tag { font-family: var(--mono); font-size: 0.74rem; color: var(--muted); }
   .demo-strip { margin-top: 18px; }
   .demo-strip .rb-h { margin-bottom: 6px; }
-  @media (max-width: 720px) { .clips { grid-template-columns: 1fr; } .clip-foot .ctrl { margin-left: 0; } }
+  @media (max-width: 720px) { .clips { grid-template-columns: 1fr; gap: 16px; } .cams { grid-template-columns: 1fr 1fr; } .clip-foot .ctrl { margin-left: 0; } }
 
   /* ---- bibtex ---- */
   .bib { position: relative; }
@@ -516,12 +513,32 @@
   <div class="sec">
     <div class="sec-label">Videos</div>
     <div>
-      <div class="vtabs" role="tablist" aria-label="Real-robot videos" id="vtabs"></div>
-      <video class="bigvid" id="bigvid" controls muted playsinline preload="metadata" poster="static/videos/compare_poster.jpg">
-        <source src="static/videos/compare.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <p class="vdesc" id="vdesc"></p>
+      <div class="vlist">
+        <article class="vitem">
+          <div class="vhead"><span class="vnum">Video 1 of 3</span><h3>Same scene, three policies</h3><span class="vlen">2:07</span></div>
+          <p class="vdesc">Nine tasks in two chapters, static then dynamic. Each segment puts S-WAM next to vanilla chunking at <i>H</i><sub>exec</sub>=20 and 50 on the same task, shown from the third-person and wrist cameras. The timer shows real seconds and stops when the task is completed.</p>
+          <video class="bigvid" controls muted playsinline preload="metadata" poster="static/videos/compare_poster.jpg">
+            <source src="static/videos/compare.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="vitem">
+          <div class="vhead"><span class="vnum">Video 2 of 3</span><h3>S-WAM across tasks and layouts</h3><span class="vlen">1:44</span></div>
+          <p class="vdesc">S-WAM alone. An overview with one trial per task, then successful trials on each of the nine tasks, every tile a different object layout.</p>
+          <video class="bigvid" controls muted playsinline preload="metadata" poster="static/videos/diverse_poster.jpg">
+            <source src="static/videos/diverse.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="vitem">
+          <div class="vhead"><span class="vnum">Video 3 of 3</span><h3>Failure modes</h3><span class="vlen">0:52</span></div>
+          <p class="vdesc">Where each policy fails: vanilla at <i>H</i><sub>exec</sub>=20 is too slow to follow moving objects, vanilla at <i>H</i><sub>exec</sub>=50 is imprecise, and S-WAM has occasional failures of its own.</p>
+          <video class="bigvid" controls muted playsinline preload="metadata" poster="static/videos/failures_poster.jpg">
+            <source src="static/videos/failures.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+      </div>
     </div>
   </div>
 </section>
@@ -632,15 +649,15 @@
         dynamic versions the objects ride a turntable that turns continuously at 22.5&deg;/s, so the
         target keeps moving while the robot acts. The other three tasks cover sustained, precise and
         multi-stage manipulation. Pick a task to watch S-WAM and both vanilla baselines side by side,
-        next to the task's success rates over all 40 trials.</p>
+        from the third-person and wrist cameras, next to the task's success rates over all 40 trials.</p>
       </div>
 
       <div class="panel" id="robot">
         <div class="tasks" id="task-chips" role="group" aria-label="Real-robot task"></div>
         <div class="clips" id="clips">
-          <figure class="clip"><div class="clip-h"><i style="background: var(--accent)"></i><span>S-WAM</span><span class="res" id="res-ours"></span></div><video id="v-ours" muted loop playsinline preload="auto"></video></figure>
-          <figure class="clip"><div class="clip-h"><i style="background: var(--base-1)"></i><span>Vanilla, H<sub>exec</sub>=20</span><span class="res" id="res-e20"></span></div><video id="v-e20" muted loop playsinline preload="auto"></video></figure>
-          <figure class="clip"><div class="clip-h"><i style="background: var(--base-2)"></i><span>Vanilla, H<sub>exec</sub>=50</span><span class="res" id="res-e50"></span></div><video id="v-e50" muted loop playsinline preload="auto"></video></figure>
+          <figure class="clip"><div class="clip-h"><i style="background: var(--accent)"></i><span>S-WAM</span><span class="res" id="res-ours"></span></div><div class="cams"><div class="cam"><video id="v-ours" muted loop playsinline preload="auto"></video><span class="cam-tag">Third-person</span></div><div class="cam"><video id="w-ours" muted loop playsinline preload="auto"></video><span class="cam-tag">Wrist</span></div></div></figure>
+          <figure class="clip"><div class="clip-h"><i style="background: var(--base-1)"></i><span>Vanilla, H<sub>exec</sub>=20</span><span class="res" id="res-e20"></span></div><div class="cams"><div class="cam"><video id="v-e20" muted loop playsinline preload="auto"></video><span class="cam-tag">Third-person</span></div><div class="cam"><video id="w-e20" muted loop playsinline preload="auto"></video><span class="cam-tag">Wrist</span></div></div></figure>
+          <figure class="clip"><div class="clip-h"><i style="background: var(--base-2)"></i><span>Vanilla, H<sub>exec</sub>=50</span><span class="res" id="res-e50"></span></div><div class="cams"><div class="cam"><video id="v-e50" muted loop playsinline preload="auto"></video><span class="cam-tag">Third-person</span></div><div class="cam"><video id="w-e50" muted loop playsinline preload="auto"></video><span class="cam-tag">Wrist</span></div></div></figure>
         </div>
         <div class="clip-foot">
           <span id="clip-cap"></span>
@@ -675,7 +692,7 @@
       </div>
 
       <div class="prose">
-        <p>The clips are single trials picked to show each task, played sped up with the real elapsed time
+        <p>The clips are the single trials shown in the first video, played back with the real elapsed time
         on the timer. The success rates come from all 40 trials. On static tasks, vanilla execution loses ground when it commits to 50 actions (57.1 against
         67.5 at <i>H</i><sub>exec</sub>=20). The dynamic tasks expose both vanilla regimes. Frequent
         replanning is hurt by inference latency while the turntable keeps moving, giving only 10.8.
@@ -1215,15 +1232,15 @@
      3. Real-robot task browser (Table: per-task success, 40 trials)
      ------------------------------------------------------------ */
   var TASKS = [
-    { id: "stack_bowl_dynamic", name: "Stack bowl", dyn: true,  r: [10.0, 25.0, 57.5], demos: 30, len: "14.6 s", prompt: "stack the red bowl on the blue bowl", desc: "Both bowls rotate on the turntable.", clip: {"speed": 3, "ours": ["S", 19.5], "e20": ["F", 24.0], "e50": ["S", 44.0], "cap": "Same bowl layout on the turning turntable. S-WAM stacks in 19.5 s and vanilla 50 in 44.0 s; vanilla 20 knocks a bowl off the turntable."} },
-    { id: "hang_cup_dynamic",   name: "Hang cup", dyn: true,    r: [7.5, 20.0, 27.5],  demos: 30, len: "21.2 s", prompt: "hang the yellow cup on the cup rack", desc: "The rack rotates, changing its position and orientation.", clip: {"speed": 2, "ours": ["S", 23.0], "e20": ["F", 28.5], "e50": ["F", 20.6], "cap": "The rack turns with the turntable. S-WAM hangs the cup in 23.0 s; both baselines drop it."} },
-    { id: "place_corn_dynamic", name: "Place corn", dyn: true,  r: [15.0, 32.5, 47.5], demos: 30, len: "16.1 s", prompt: "place the corn in the bowl", desc: "Corn and distractors rotate; the bowl stays put.", clip: {"speed": 3, "ours": ["S", 13.0], "e20": ["F", 39.4], "e50": ["S", 40.0], "cap": "Objects move on the turntable; the starting layouts of the three trials differ. S-WAM places the corn in 13.0 s and vanilla 50 in 40.0 s; vanilla 20 never catches the moving corn."} },
-    { id: "stack_bowl_static",  name: "Stack bowl", dyn: false, r: [85.0, 72.5, 90.0], demos: 30, len: "19.1 s", prompt: "stack the red bowl on the blue bowl", desc: "Pick the red bowl and place it inside the blue bowl.", clip: {"speed": 3, "ours": ["S", 23.0], "e20": ["S", 41.0], "e50": ["S", 31.5], "cap": "Same layout, all three succeed: S-WAM in 23.0 s, vanilla 20 in 41.0 s, vanilla 50 in 31.5 s."} },
-    { id: "hang_cup_static",    name: "Hang cup", dyn: false,   r: [57.5, 52.5, 70.0], demos: 30, len: "17.0 s", prompt: "hang the yellow cup on the cup rack", desc: "Pick the yellow cup and hang it on the rack.", clip: {"speed": 2, "ours": ["S", 14.0], "e20": ["S", 21.0], "e50": ["S", 22.0], "cap": "Same cup position, all three succeed: S-WAM in 14.0 s, vanilla 20 in 21.0 s, vanilla 50 in 22.0 s."} },
-    { id: "place_corn_static",  name: "Place corn", dyn: false, r: [77.5, 60.0, 75.0], demos: 30, len: "18.1 s", prompt: "place the corn in the bowl", desc: "Pick the corn among distractors and place it in the bowl.", clip: {"speed": 2, "ours": ["S", 16.0], "e20": ["S", 20.5], "e50": ["S", 39.0], "cap": "Same layout with distractors, all three succeed: S-WAM in 16.0 s, vanilla 20 in 20.5 s, vanilla 50 in 39.0 s."} },
-    { id: "put_lid",            name: "Put lid on cup", dyn: false, r: [75.0, 67.5, 80.0], demos: 30, len: "19.1 s", prompt: "put the blue lid on the blue cup", desc: "Precise placement: the lid must cover the cup opening.", clip: {"speed": 4, "ours": ["S", 31.5], "e20": ["S", 70.0], "e50": ["F", 62.5], "cap": "Same layout. S-WAM puts the lid on in 31.5 s and vanilla 20 in 70.0 s; vanilla 50 never lifts the lid off the table."} },
-    { id: "pour_water",         name: "Pour water", dyn: false, r: [62.5, 50.0, 67.5], demos: 30, len: "30.2 s", prompt: "pour the water from the red cup into the blue cup", desc: "Sustained manipulation over the whole pour.", clip: {"speed": 5, "ours": ["S", 32.0], "e20": ["F", 92.4], "e50": ["S", 47.5], "cap": "Same layout. S-WAM reaches the pouring pose at 32.0 s and vanilla 50 at 47.5 s; vanilla 20 holds the cup above the target without pouring."} },
-    { id: "put_blue_bowl",      name: "Bowl in drawer", dyn: false, r: [47.5, 40.0, 52.5], demos: 30, len: "44.4 s", prompt: "put the blue bowl in the second drawer", desc: "Multi-stage: open the drawer, then place the bowl.", clip: {"speed": 5, "ours": ["S", 92.5], "e20": ["F", 88.9], "e50": ["F", 12.1], "cap": "Same bowl position. S-WAM opens the drawer and places the bowl in 92.5 s; both baselines fail at the drawer handle."} }
+    { id: "stack_bowl_dynamic", name: "Stack bowl", dyn: true,  r: [10.0, 25.0, 57.5], demos: 30, len: "14.6 s", prompt: "stack the red bowl on the blue bowl", desc: "Both bowls rotate on the turntable.", clip: {"speed": 5, "ours": ["S", 19.5], "e20": ["F", 24.0], "e50": ["S", 44.0], "cap": "Same layout on the turning turntable. S-WAM stacks in 19.5 s and vanilla 50 in 44.0 s; vanilla 20 knocks a bowl off the turntable."} },
+    { id: "hang_cup_dynamic",   name: "Hang cup", dyn: true,    r: [7.5, 20.0, 27.5],  demos: 30, len: "21.2 s", prompt: "hang the yellow cup on the cup rack", desc: "The rack rotates, changing its position and orientation.", clip: {"speed": 3, "ours": ["S", 23.0], "e20": ["F", 28.5], "e50": ["F", 20.6], "cap": "The rack turns with the turntable. S-WAM hangs the cup in 23.0 s; both baselines drop it."} },
+    { id: "place_corn_dynamic", name: "Place corn", dyn: true,  r: [15.0, 32.5, 47.5], demos: 30, len: "16.1 s", prompt: "place the corn in the bowl", desc: "Corn and distractors rotate; the bowl stays put.", clip: {"speed": 4, "ours": ["S", 13.0], "e20": ["F", 34.0], "e50": ["S", 36.0], "cap": "Objects move on the turntable; the starting layouts of the three trials differ. S-WAM places the corn in 13.0 s and vanilla 50 in 36.0 s; vanilla 20 carries the corn to the bowl but leaves it at the rim."} },
+    { id: "stack_bowl_static",  name: "Stack bowl", dyn: false, r: [85.0, 72.5, 90.0], demos: 30, len: "19.1 s", prompt: "stack the red bowl on the blue bowl", desc: "Pick the red bowl and place it inside the blue bowl.", clip: {"speed": 5, "ours": ["S", 23.0], "e20": ["S", 41.0], "e50": ["S", 31.5], "cap": "Same layout, all three succeed: S-WAM in 23.0 s, vanilla 20 in 41.0 s, vanilla 50 in 31.5 s."} },
+    { id: "hang_cup_static",    name: "Hang cup", dyn: false,   r: [57.5, 52.5, 70.0], demos: 30, len: "17.0 s", prompt: "hang the yellow cup on the cup rack", desc: "Pick the yellow cup and hang it on the rack.", clip: {"speed": 1, "ours": ["S", 14.0], "e20": ["S", 21.0], "e50": ["S", 22.0], "cap": "Same cup position, all three succeed: S-WAM in 14.0 s, vanilla 20 in 21.0 s, vanilla 50 in 22.0 s."} },
+    { id: "place_corn_static",  name: "Place corn", dyn: false, r: [77.5, 60.0, 75.0], demos: 30, len: "18.1 s", prompt: "place the corn in the bowl", desc: "Pick the corn among distractors and place it in the bowl.", clip: {"speed": 4, "ours": ["S", 16.0], "e20": ["S", 20.5], "e50": ["S", 39.0], "cap": "Same layout with distractors, all three succeed: S-WAM in 16.0 s, vanilla 20 in 20.5 s, vanilla 50 in 39.0 s."} },
+    { id: "put_lid",            name: "Put lid on cup", dyn: false, r: [75.0, 67.5, 80.0], demos: 30, len: "19.1 s", prompt: "put the blue lid on the blue cup", desc: "Precise placement: the lid must cover the cup opening.", clip: {"speed": 8, "ours": ["S", 31.5], "e20": ["S", 70.0], "e50": ["F", 62.5], "cap": "Same layout. S-WAM puts the lid on in 31.5 s and vanilla 20 in 70.0 s; vanilla 50 never lifts the lid off the table."} },
+    { id: "pour_water",         name: "Pour water", dyn: false, r: [62.5, 50.0, 67.5], demos: 30, len: "30.2 s", prompt: "pour the water from the red cup into the blue cup", desc: "Sustained manipulation over the whole pour.", clip: {"speed": 8, "ours": ["S", 47.0], "e20": ["F", 144.6], "e50": ["S", 67.0], "cap": "Same layout. S-WAM finishes pouring at 47.0 s; vanilla 50 is still pouring when its recording ends at 67.0 s; vanilla 20 is far slower and its pour misses the cup."} },
+    { id: "put_blue_bowl",      name: "Bowl in drawer", dyn: false, r: [47.5, 40.0, 52.5], demos: 30, len: "44.4 s", prompt: "put the blue bowl in the second drawer", desc: "Multi-stage: open the drawer, then place the bowl.", clip: {"speed": 8, "ours": ["S", 53.0], "e20": ["F", 88.9], "e50": ["S", 41.8], "cap": "The bowl position differs slightly between the trials. S-WAM opens the drawer and places the bowl in 53.0 s. Vanilla 50 also succeeds; its full 41.8 s recording is shown, and the bowl is released into the drawer at 38 s. Vanilla 20 fiddles with the drawer and never touches the bowl."} }
   ];
   var METHODS = [
     { k: "Vanilla, H<sub>exec</sub>=20", t: "Vanilla, H_exec=20", c: "var(--base-1)" },
@@ -1232,31 +1249,33 @@
   ];
   var chips = $("task-chips"), rbars = $("rbars");
   var VK = ["ours", "e20", "e50"], vids = VK.map(function (k) { return $("v-" + k); });
+  var wrists = VK.map(function (k) { return $("w-" + k); }), allClips = vids.concat(wrists);
   var clipsPlaying = !reduce, clipsVisible = false;
   function loadClips(t) {
     var c = t.clip;
     VK.forEach(function (k, j) {
       var v = vids[j], r = c[k];
       v.src = "static/videos/clips/" + t.id + "_" + k + ".mp4";
+      wrists[j].src = "static/videos/clips/" + t.id + "_" + k + "_wrist.mp4";
       v.setAttribute("aria-label", (j ? METHODS[j - 1].t : "S-WAM") + ", " + t.name + (t.dyn ? " (dynamic)" : "") + ": " + (r[0] === "S" ? "success" : "failure"));
       var res = $("res-" + k);
       res.textContent = r[0] === "S" ? "Success \u00b7 " + r[1].toFixed(1) + " s" : "Failure";
       res.className = "res " + (r[0] === "S" ? "ok" : "fail");
     });
     $("clip-cap").textContent = c.cap;
-    $("clip-speed").textContent = c.speed + "\u00d7 speed \u00b7 timer in real seconds";
+    $("clip-speed").textContent = (c.speed > 1 ? c.speed + "\u00d7 speed" : "real time") + " \u00b7 timer in real seconds";
     syncPlay();
   }
   function syncPlay() {
-    vids.forEach(function (v) {
+    allClips.forEach(function (v) {
       if (clipsPlaying && clipsVisible) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
       else v.pause();
     });
     $("clip-play").textContent = clipsPlaying ? "Pause" : "Play";
   }
-  // The three clips of a task have the same length; keep the baselines on the S-WAM clock.
+  // All six clips of a task have the same length; keep them on the S-WAM third-person clock.
   vids[0].addEventListener("timeupdate", function () {
-    for (var j = 1; j < 3; j++) if (Math.abs(vids[j].currentTime - vids[0].currentTime) > 0.3) vids[j].currentTime = vids[0].currentTime;
+    for (var j = 1; j < allClips.length; j++) if (Math.abs(allClips[j].currentTime - vids[0].currentTime) > 0.3) allClips[j].currentTime = vids[0].currentTime;
   });
   $("clip-play").addEventListener("click", function () { clipsPlaying = !clipsPlaying; syncPlay(); });
   if ("IntersectionObserver" in window) {
@@ -1287,8 +1306,7 @@
     var img = $("task-img");
     img.src = "static/images/tasks/" + t.id + ".jpg";
     img.alt = "Five frames of the " + t.name.toLowerCase() + (t.dyn ? " (dynamic)" : "") + " demonstration.";
-    $("task-meta").innerHTML = "<span>" + t.desc + "</span><span><code>" + t.prompt + "</code></span><span>" +
-      t.demos + " demos &middot; median " + t.len + "</span>";
+    $("task-meta").innerHTML = "<span>" + t.desc + "</span><span><code>" + t.prompt + "</code></span>";
     rEls.forEach(function (hb, j) {
       // Bars span 0-100 across 84% of the track, leaving room for the value label.
       hb.firstElementChild.style.width = (t.r[j] * 0.84) + "%";
@@ -1308,33 +1326,14 @@
   showTask(0);
 
   /* ------------------------------------------------------------
-     4. Big videos (demo_v2)
+     4. Big videos: only one plays at a time
      ------------------------------------------------------------ */
-  var VIDS = [
-    { f: "compare", t: "Same scene, three policies", len: "2:00",
-      d: "Nine tasks in two chapters, static then dynamic. Each segment puts S-WAM next to vanilla chunking at H_exec = 20 and 50 on the same task, shown from the third-person and wrist cameras. The timer shows real seconds and stops when the task is completed." },
-    { f: "diverse", t: "Across tasks and layouts", len: "1:44",
-      d: "S-WAM alone. An overview with one trial per task, then successful trials on each of the nine tasks, every tile a different object layout." },
-    { f: "failures", t: "Failure modes", len: "0:53",
-      d: "Where each policy fails: vanilla at H_exec = 20 is too slow to follow moving objects, vanilla at H_exec = 50 is imprecise, and S-WAM has occasional failures of its own." }
-  ];
-  var bigvid = $("bigvid"), vtabs = $("vtabs");
-  function showVid(i, play) {
-    var v = VIDS[i];
-    Array.prototype.forEach.call(vtabs.children, function (b, j) { b.setAttribute("aria-selected", j === i); });
-    bigvid.poster = "static/videos/" + v.f + "_poster.jpg";
-    bigvid.src = "static/videos/" + v.f + ".mp4";
-    $("vdesc").textContent = v.d;
-    if (play) { var p = bigvid.play(); if (p && p.catch) p.catch(function () {}); }
-  }
-  VIDS.forEach(function (v, i) {
-    var b = document.createElement("button");
-    b.type = "button"; b.className = "vtab"; b.setAttribute("role", "tab");
-    b.innerHTML = "<b>" + v.t + "</b><span>" + v.len + "</span>";
-    b.addEventListener("click", function () { showVid(i, true); });
-    vtabs.appendChild(b);
+  var bigvids = document.querySelectorAll(".bigvid");
+  Array.prototype.forEach.call(bigvids, function (v) {
+    v.addEventListener("play", function () {
+      Array.prototype.forEach.call(bigvids, function (o) { if (o !== v) o.pause(); });
+    });
   });
-  showVid(0, false);
 
   /* ------------------------------------------------------------
      BibTeX copy
